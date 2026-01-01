@@ -1,32 +1,37 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import {defineStore} from "pinia";
+import {ref} from "vue";
+import type {LoginUserVo} from "../api";
+import {userLogout} from "../api";
 
-export const useUserStore = defineStore('user', () => {
-  // 登录用户信息
-  const loginUser = ref({
-    username: '',
-    userAvatar: '',
-  });
-  
-  // 登录状态
-  const isLogin = ref(false);
+export const useUserStore = defineStore(
+    "user",
+    () => {
+        const loginUser = ref<LoginUserVo>({});
+        const isLogin = ref(false);
 
-  // 模拟登录方法
-  const setLoginUser = (user: { username: string; userAvatar: string }) => {
-    loginUser.value = user;
-    isLogin.value = true;
-  };
+        const setLoginUser = (user: LoginUserVo) => {
+            loginUser.value = user;
+            isLogin.value = true;
+        };
 
-  // 模拟退出方法
-  const logout = () => {
-    loginUser.value = { username: '', userAvatar: '' };
-    isLogin.value = false;
-  };
+        const logout = async () => {
+            try {
+                await userLogout();
+            } catch (error) {
+                console.error("后端退出失败", error);
+            } finally {
+                loginUser.value = {};
+                isLogin.value = false;
+                localStorage.removeItem("user-storage");
+            }
+        };
 
-  return {
-    loginUser,
-    isLogin,
-    setLoginUser,
-    logout
-  };
-});
+        return {loginUser, isLogin, setLoginUser, logout};
+    },
+    {
+        persist: {
+            key: "user-storage",
+            storage: localStorage,
+        },
+    }
+);
