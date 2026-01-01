@@ -55,7 +55,6 @@ const history = [
     </div>
 
     <div class="content-wrapper">
-
       <section class="section">
         <a-row :gutter="[48, 24]" align="middle">
           <a-col :xs="24" :md="12">
