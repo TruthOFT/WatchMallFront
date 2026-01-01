@@ -5,10 +5,11 @@ import BasicLayout from "@/layouts/BasicLayout.vue";
 import IndexPage from "@/pages/IndexPage.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import SupportPage from "@/pages/SupportPage.vue";
+import UserProfilePage from '@/pages/UserProfilePage.vue';
 
 const routes = [
     {
-        path: "/", component: BasicLayout, children: [
+        path: "/", component: BasicLayout, redirect: "/index", children: [
             {
                 path: "index",
                 component: IndexPage,
@@ -21,6 +22,10 @@ const routes = [
     {
         path: "/user/login",
         component: LoginPage,
+    },
+    {
+        path: "/user/profile",
+        component: UserProfilePage
     }
 ]
 
