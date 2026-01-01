@@ -1,11 +1,42 @@
 <template>
-  <div id="app">
-    <router-view/>
-<!--    <BasicLayout />-->
-  </div>
+  <a-config-provider :locale="zhCN">
+    <div id="app">
+      <router-view />
+    </div>
+  </a-config-provider>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { useUserStore } from './config/stores';
+import { getLoginUser } from './api';
+import zhCN from 'ant-design-vue/es/locale/zh_CN';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+
+dayjs.locale('zh-cn');
+
+const userStore = useUserStore();
+const doInit = async () => {
+  try {
+    const res = await getLoginUser();
+    if (res.data?.code === 0 && res.data.data) {
+      userStore.setLoginUser(res.data.data);
+    } else {
+      await userStore.logout();
+    }
+  } catch (e) {
+    await userStore.logout();
+  }
+};
+
+onMounted(() => {
+  doInit();
+});
 </script>
-<style scoped>
+
+<style>
+#app {
+  height: 100%;
+}
 </style>
