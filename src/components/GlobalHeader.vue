@@ -1,137 +1,165 @@
 <template>
-  <a-row :wrap="false">
-    <a-col :span="3">
-      <div class="title-bar">
-        <img class="logo" src="../assets/07-deer.svg" alt="logo"/>
+  <a-row :wrap="false" align="middle">
+    <a-col :span="4">
+      <div class="title-bar" @click="router.push('/')" style="cursor: pointer">
+        <img class="logo" src="../assets/07-deer.svg" alt="logo" />
         <div class="title">精准之路</div>
       </div>
     </a-col>
-    <a-col :span="14">
-      <a-menu
-          v-model:selectedKeys="current"
-          mode="horizontal"
-          :items="items"
-          @click="doMenuClick"
-      />
+    <a-col :span="10">
+      <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items" @click="doMenuClick" />
     </a-col>
     <a-col :span="4">
-      <a-input-search
-          v-model:value="value"
-          placeholder="搜索..."
-          @search="onSearch"
-          style="margin-top: 15px; width: 200px"
-      />
+      <a-input-search v-model:value="searchValue" placeholder="搜索..." @search="onSearch" style="width: 180px; margin-top: 18px;" />
     </a-col>
-    <a-col :span="1">
-      <div class="login_status">
-        <a-button type="link" @click="goLogin">登录</a-button>
-      </div>
-    </a-col>
-    <a-col :span="3">
-      <div class="cart">
-        <a-button type="link" @click="goCart">购物车</a-button>
+    <a-col :span="6">
+      <div class="right-area">
+        <div class="cart">
+          <a-button type="link" @click="goCart">购物车</a-button>
+        </div>
+        <div class="login_status">
+          <template v-if="userStore.isLogin">
+            <a-dropdown-button>
+              {{ userStore.loginUser.username }}
+              <template #overlay>
+                <a-menu @click="handleMenuClick">
+                  <a-menu-item key="profile">
+                    <UserOutlined /> 个人信息
+                  </a-menu-item>
+                  <a-menu-divider />
+                  <a-menu-item key="logout">
+                    <LogoutOutlined /> 退出登录
+                  </a-menu-item>
+                </a-menu>
+              </template>
+              <template #icon>
+                <a-avatar size="small" :src="userStore.loginUser.avatarUrl">
+                  {{ userStore.loginUser.username }}
+                </a-avatar>
+              </template>
+            </a-dropdown-button>
+          </template>
+          <template v-else>
+            <a-button type="primary" @click="goLogin">登录</a-button>
+          </template>
+        </div>
       </div>
     </a-col>
   </a-row>
-
 </template>
 
 <script lang="ts" setup>
-import {h, ref} from "vue";
-import {HomeOutlined, AppstoreOutlined, InfoCircleOutlined, ToolOutlined} from "@ant-design/icons-vue";
-import type {MenuProps} from "ant-design-vue";
-import {useRouter} from "vue-router";
+import { h, ref, watchEffect } from "vue";
+import { HomeOutlined, AppstoreOutlined, InfoCircleOutlined, ToolOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons-vue";
+import { message, type MenuProps } from "ant-design-vue";
+import { useRouter, useRoute } from "vue-router";
+import { useUserStore } from "../config/stores";
 
-const value = ref<string>('');
+const router = useRouter();
+const route = useRoute();
+const userStore = useUserStore(); // 开启 Store 订阅
 
+const searchValue = ref<string>('');
 const items = ref<MenuProps["items"]>([
-  {
-    key: "/index",
-    icon: () => h(HomeOutlined),
-    label: "首页",
-    title: "首页",
-  },
+  { key: "/index", icon: () => h(HomeOutlined), label: "首页" },
   {
     key: "category",
     label: "分类",
-    title: "分类",
     icon: () => h(AppstoreOutlined),
     children: [
       {
         type: 'group',
-        label: '分类1',
+        label: '常用分类',
         children: [
-          {
-            label: 'Option 1',
-            key: 'setting:1',
-          },
-          {
-            label: 'Option 2',
-            key: 'setting:2',
-          },
+          { label: '选项 1', key: 'setting:1' },
+          { label: '选项 2', key: 'setting:2' },
         ],
-      },
-      {
-        type: 'group',
-        label: '分类2',
       },
     ],
   },
-  {
-    key: "/support",
-    icon: () => h(ToolOutlined),
-    label: "服务与支持",
-    title: "服务与支持",
-  },
-  {
-    key: "/about",
-    icon: () => h(InfoCircleOutlined),
-    label: "关于",
-    title: "关于",
-  },
+  { key: "/support", icon: () => h(ToolOutlined), label: "服务与支持" },
+  { key: "/about", icon: () => h(InfoCircleOutlined), label: "关于" },
 ]);
-const router = useRouter();
 
-// 路由跳转事件
-const doMenuClick = ({key}: { key: string }) => {
-  router.push({
-    path: key,
-  });
-};
 const goCart = () => {
-  router.push({
-    path: "/cart",
-  })
-}
+  if (userStore.isLogin) {
+    router.push("/cart");
+  } else {
+    message.error("还未登录, 请先登录")
+    router.push("/user/login");
+  }
+};
+
 const goLogin = () => {
-  router.push({
-    path: "/user/login",
-  })
-}
-// 当前选中菜单
+  router.push("/user/login");
+};
+
+const onSearch = (val: string) => {
+  console.log("搜索内容:", val);
+};
+
+const doMenuClick = ({ key }: { key: string }) => {
+  if (key.startsWith('/')) {
+    router.push(key);
+  }
+};
+
 const current = ref<string[]>(['/index']);
-// 监听路由变化，更新当前选中菜单
-router.afterEach((to, from, failure) => {
-  current.value = [to.path];
+watchEffect(() => {
+  current.value = [route.path];
 });
-
-
+const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
+  if (key === 'logout') {
+    userStore.logout(); 
+    message.success("已成功退出登录");
+    router.push("/index");
+  } else if (key === 'profile') {
+    router.push("/user/profile");
+  }
+};
 </script>
 
 <style scoped>
-
 .title-bar {
   display: flex;
   align-items: center;
 }
 
 .title {
-  color: black;
+  color: #1890ff;
+  /* 蓝色标题更有设计感 */
   font-size: 18px;
-  margin-left: 16px;
+  font-weight: bold;
+  margin-left: 12px;
 }
 
 .logo {
-  height: 48px;
+  height: 40px;
+}
+
+.right-area {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  /* 按钮之间的间距 */
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.user-profile:hover {
+  background: #f5f5f5;
+}
+
+.username {
+  margin-left: 8px;
+  font-weight: 500;
+  color: #333;
 }
 </style>
