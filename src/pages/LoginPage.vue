@@ -2,40 +2,40 @@
   <div class="login-container">
     <div class="login-box">
       <div class="header">
-        <img class="logo" src="../assets/07-deer.svg" alt="logo" />
+        <img class="logo" src="../assets/07-deer.svg" alt="logo"/>
         <h1 class="title">精准之路</h1>
         <p class="desc">欢迎回来，请登录您的账号</p>
       </div>
 
       <a-form
-        :model="formState"
-        name="login_form"
-        layout="vertical"
-        @finish="onFinish"
+          :model="formState"
+          name="login_form"
+          layout="vertical"
+          @finish="onFinish"
       >
         <a-form-item
-          label="账号"
-          name="userAccount"
-          :rules="[{ required: true, message: '请输入账号!' }]"
+            label="账号"
+            name="userAccount"
+            :rules="[{ required: true, message: '请输入账号!' }]"
         >
           <a-input v-model:value="formState.userAccount" placeholder="请输入账号">
             <template #prefix>
-              <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              <UserOutlined style="color: rgba(0, 0, 0, 0.25)"/>
             </template>
           </a-input>
         </a-form-item>
 
         <a-form-item
-          label="密码"
-          name="userPassword"
-          :rules="[{ required: true, message: '请输入密码!' }]"
+            label="密码"
+            name="userPassword"
+            :rules="[{ required: true, message: '请输入密码!' }]"
         >
           <a-input-password
-            v-model:value="formState.userPassword"
-            placeholder="请输入密码"
+              v-model:value="formState.userPassword"
+              placeholder="请输入密码"
           >
             <template #prefix>
-              <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              <LockOutlined style="color: rgba(0, 0, 0, 0.25)"/>
             </template>
           </a-input-password>
         </a-form-item>
@@ -47,18 +47,19 @@
 
         <a-form-item>
           <a-button
-            type="primary"
-            html-type="submit"
-            class="login-button"
-            :loading="loading"
-            block
+              type="primary"
+              html-type="submit"
+              class="login-button"
+              :loading="loading"
+              block
           >
             登 录
           </a-button>
         </a-form-item>
 
         <div class="footer">
-          还没有账号？ <a-button type="link" style="padding: 0">立即注册</a-button>
+          还没有账号？
+          <a-button type="link" style="padding: 0">立即注册</a-button>
         </div>
       </a-form>
     </div>
@@ -66,14 +67,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
-import { useRouter } from 'vue-router';
-import { userLogin } from '../api/sdk.gen'; // 你的 SDK 路径
-import { useUserStore } from '../config/stores';
+import {reactive, ref} from 'vue';
+import {UserOutlined, LockOutlined} from '@ant-design/icons-vue';
+import {message} from 'ant-design-vue';
+import {useRoute, useRouter} from 'vue-router';
+import {userLogin} from '../api'; // 你的 SDK 路径
+import {useUserStore} from '../config/stores';
 
 const router = useRouter();
+const route = useRoute()
 const userStore = useUserStore();
 const loading = ref(false);
 
@@ -98,7 +100,8 @@ const onFinish = async (values: any) => {
       message.success('登录成功');
       userStore.loginUser = res.data.data;
       userStore.isLogin = true;
-      router.push('/');
+      const redirectPath = route.query.redirect as string || "/"
+      await router.push(redirectPath);
     } else {
       message.error(res.data?.message || '登录失败');
     }
