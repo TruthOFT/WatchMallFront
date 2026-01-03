@@ -26,7 +26,7 @@ const doInit = async () => {
       await userStore.logout();
     }
   } catch (e) {
-    await userStore.logout();
+    console.log(e);
   }
 };
 
