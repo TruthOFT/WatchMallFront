@@ -71,8 +71,8 @@ import {reactive, ref} from 'vue';
 import {UserOutlined, LockOutlined} from '@ant-design/icons-vue';
 import {message} from 'ant-design-vue';
 import {useRoute, useRouter} from 'vue-router';
-import {userLogin} from '../api'; // 你的 SDK 路径
-import {useUserStore} from '../config/stores';
+import {userLogin} from '@/api/userController'; // 你的 SDK 路径
+import {useUserStore} from '@/config/stores';
 
 const router = useRouter();
 const route = useRoute()

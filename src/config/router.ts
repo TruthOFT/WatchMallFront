@@ -36,7 +36,7 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes,
 })
-const whiteList = ["/index", "/user/login", "/user/register"]
+const whiteList = ["/index", "/user/login", "/user/register", "/support", "/about"]
 router.beforeEach((to, from, next) => {
     const userStore = useUserStore()
     const isLogin = !!userStore.isLogin;

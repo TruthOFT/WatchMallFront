@@ -46,7 +46,6 @@ const history = [
 
 <template>
   <div class="about-page">
-
     <div class="hero-section">
       <div class="hero-overlay">
         <h1 class="hero-title">时光流转 · 经典永恒</h1>
@@ -56,7 +55,7 @@ const history = [
 
     <div class="content-wrapper">
       <section class="section">
-        <a-row :gutter="[48, 24]" align="middle">
+        <a-row :gutter="[48, 24]">
           <a-col :xs="24" :md="12">
             <img
                 :src="getImageUrl('../assets/watches/w1.jpg')"
@@ -78,15 +77,12 @@ const history = [
           </a-col>
         </a-row>
       </section>
-
       <a-divider />
-
       <section class="section">
         <div class="center-header">
           <h2 class="section-title">为什么选择我们</h2>
           <p class="section-subtitle">品质与服务是我们永恒的承诺</p>
         </div>
-
         <a-row :gutter="[24, 24]">
           <a-col :xs="24" :sm="12" :md="6" v-for="(item, index) in features" :key="index">
             <a-card hoverable class="feature-card">
@@ -99,7 +95,6 @@ const history = [
           </a-col>
         </a-row>
       </section>
-
       <section class="section history-section">
         <div class="center-header">
           <h2 class="section-title">发展历程</h2>
@@ -119,7 +114,6 @@ const history = [
           </a-timeline>
         </div>
       </section>
-
     </div>
   </div>
 </template>

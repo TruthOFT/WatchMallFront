@@ -92,10 +92,10 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { message } from 'ant-design-vue';
-import { UserOutlined, PlusOutlined } from '@ant-design/icons-vue'; // 引入图标
-import { getLoginUser } from '../api'; // 假设这是你的获取登录用户接口
-import { useUserStore } from '../config/stores';
-import type { LoginUserVo } from '../api';
+import { UserOutlined } from '@ant-design/icons-vue';
+import { getLoginUser } from '@/api';
+import { useUserStore } from '@/config/stores';
+import type { LoginUserVo } from '@/api';
 import type { UploadChangeParam, UploadProps } from 'ant-design-vue'; // 引入 Ant Design Vue 的上传类型
 
 const userStore = useUserStore();
@@ -199,11 +199,4 @@ const handleEdit = () => {
   flex-grow: 1; /* 占据剩余空间 */
 }
 
-/* 覆盖 Ant Design Card 默认 padding */
-.ant-card :deep(.ant-card-body) {
-  padding: 24px;
-}
-.ant-card :deep(.ant-card-head) {
-  padding: 0 24px;
-}
 </style>

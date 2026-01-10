@@ -68,11 +68,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { 
-  BookOutlined, 
-  CustomerServiceOutlined, 
-  FileProtectOutlined, 
-  ThunderboltOutlined 
+import {
+  BookOutlined,
+  CustomerServiceOutlined,
+  FileProtectOutlined,
+  ThunderboltOutlined
 } from '@ant-design/icons-vue';
 
 const activeKey = ref(['1']);

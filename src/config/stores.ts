@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import type {LoginUserVo} from "../api";
-import {userLogout} from "../api";
+import type {LoginUserVo} from "@/api/typings";
+import {userLogout} from "@/api/userController";
 
 export const useUserStore = defineStore(
     "user",

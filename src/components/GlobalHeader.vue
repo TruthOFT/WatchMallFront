@@ -63,7 +63,7 @@ import {
 } from "@ant-design/icons-vue";
 import {message, type MenuProps} from "ant-design-vue";
 import {useRouter, useRoute} from "vue-router";
-import {useUserStore} from "../config/stores";
+import {useUserStore} from "@/config/stores";
 
 const router = useRouter();
 const route = useRoute();
