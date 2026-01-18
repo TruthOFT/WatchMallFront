@@ -1,16 +1,15 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from "umi";
+import request from "@/request"
 
 /** 此处后端没有提供注释 POST /user/add */
-export async function addUser(
-  body: API.UserAddRequest,
-  options?: { [key: string]: any }
+export async function addUser(body: API.UserAddRequest,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseLong>("/user/add", {
-    method: "POST",
+  return request<API.BaseResponseLong>('/user/add', {
+  method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
@@ -18,11 +17,14 @@ export async function addUser(
 }
 
 /** 此处后端没有提供注释 POST /user/avatar */
-export async function uploadAvatar(body: {}, options?: { [key: string]: any }) {
-  return request<API.BaseResponseString>("/user/avatar", {
-    method: "POST",
+export async function uploadAvatar(body: {
+  },
+  options ?: {[key: string]: any}
+) {
+  return request<API.BaseResponseString>('/user/avatar', {
+  method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
@@ -30,14 +32,13 @@ export async function uploadAvatar(body: {}, options?: { [key: string]: any }) {
 }
 
 /** 此处后端没有提供注释 POST /user/delete */
-export async function deleteUser(
-  body: API.DeleteRequest,
-  options?: { [key: string]: any }
+export async function deleteUser(body: API.DeleteRequest,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseBoolean>("/user/delete", {
-    method: "POST",
+  return request<API.BaseResponseBoolean>('/user/delete', {
+  method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
@@ -47,22 +48,24 @@ export async function deleteUser(
 /** 此处后端没有提供注释 GET /user/get */
 export async function getUserById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getUserByIdParams,
-  options?: { [key: string]: any }
+  params: API.getUserByIdParams
+    ,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseUser>("/user/get", {
-    method: "GET",
+  return request<API.BaseResponseUser>('/user/get', {
+  method: 'GET',
     params: {
-      ...params,
-    },
+        ...params,},
     ...(options || {}),
   });
 }
 
 /** 此处后端没有提供注释 GET /user/get/login */
-export async function getLoginUser(options?: { [key: string]: any }) {
-  return request<API.BaseResponseLoginUserVO>("/user/get/login", {
-    method: "GET",
+export async function getLoginUser(
+  options ?: {[key: string]: any}
+) {
+  return request<API.BaseResponseLoginUserVO>('/user/get/login', {
+  method: 'GET',
     ...(options || {}),
   });
 }
@@ -70,27 +73,26 @@ export async function getLoginUser(options?: { [key: string]: any }) {
 /** 此处后端没有提供注释 GET /user/get/vo */
 export async function getUserVoById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getUserVOByIdParams,
-  options?: { [key: string]: any }
+  params: API.getUserVOByIdParams
+    ,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseUserVO>("/user/get/vo", {
-    method: "GET",
+  return request<API.BaseResponseUserVO>('/user/get/vo', {
+  method: 'GET',
     params: {
-      ...params,
-    },
+        ...params,},
     ...(options || {}),
   });
 }
 
 /** 此处后端没有提供注释 POST /user/login */
-export async function userLogin(
-  body: API.UserLoginRequest,
-  options?: { [key: string]: any }
+export async function userLogin(body: API.UserLoginRequest,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseLoginUserVO>("/user/login", {
-    method: "POST",
+  return request<API.BaseResponseLoginUserVO>('/user/login', {
+  method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
@@ -98,22 +100,23 @@ export async function userLogin(
 }
 
 /** 此处后端没有提供注释 POST /user/logout */
-export async function userLogout(options?: { [key: string]: any }) {
-  return request<API.BaseResponseBoolean>("/user/logout", {
-    method: "POST",
+export async function userLogout(
+  options ?: {[key: string]: any}
+) {
+  return request<API.BaseResponseBoolean>('/user/logout', {
+  method: 'POST',
     ...(options || {}),
   });
 }
 
 /** 此处后端没有提供注释 POST /user/register */
-export async function userRegister(
-  body: API.UserRegisterRequest,
-  options?: { [key: string]: any }
+export async function userRegister(body: API.UserRegisterRequest,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseLong>("/user/register", {
-    method: "POST",
+  return request<API.BaseResponseLong>('/user/register', {
+  method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
@@ -121,14 +124,13 @@ export async function userRegister(
 }
 
 /** 此处后端没有提供注释 POST /user/update */
-export async function updateUser(
-  body: API.UserUpdateRequest,
-  options?: { [key: string]: any }
+export async function updateUser(body: API.UserUpdateRequest,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseBoolean>("/user/update", {
-    method: "POST",
+  return request<API.BaseResponseBoolean>('/user/update', {
+  method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
@@ -136,16 +138,16 @@ export async function updateUser(
 }
 
 /** 此处后端没有提供注释 POST /user/update/my */
-export async function updateMyUser(
-  body: API.UserUpdateMyRequest,
-  options?: { [key: string]: any }
+export async function updateMyUser(body: API.UserUpdateMyRequest,
+  options ?: {[key: string]: any}
 ) {
-  return request<API.BaseResponseBoolean>("/user/update/my", {
-    method: "POST",
+  return request<API.BaseResponseBoolean>('/user/update/my', {
+  method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
   });
 }
+

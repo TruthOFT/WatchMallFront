@@ -93,9 +93,9 @@
 import { ref, onMounted, computed } from 'vue';
 import { message } from 'ant-design-vue';
 import { UserOutlined } from '@ant-design/icons-vue';
-import { getLoginUser } from '@/api';
+import { getLoginUser } from '@/api/userController';
 import { useUserStore } from '@/config/stores';
-import type { LoginUserVo } from '@/api';
+import type { LoginUserVo } from '@/api/typings';
 import type { UploadChangeParam, UploadProps } from 'ant-design-vue'; // 引入 Ant Design Vue 的上传类型
 
 const userStore = useUserStore();
