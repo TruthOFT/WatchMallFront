@@ -59,7 +59,8 @@ import {
   InfoCircleOutlined,
   ToolOutlined,
   UserOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  ProfileOutlined
 } from "@ant-design/icons-vue";
 import {message, type MenuProps} from "ant-design-vue";
 import {useRouter, useRoute} from "vue-router";
@@ -79,14 +80,43 @@ const items = ref<MenuProps["items"]>([
     children: [
       {
         type: 'group',
-        label: '常用分类',
+        label: '机芯类型',
         children: [
-          {label: '选项 1', key: 'setting:1'},
-          {label: '选项 2', key: 'setting:2'},
+          { label: '机械表', key: '/category/mechanical' },
+          { label: '石英表', key: '/category/quartz' },
+          { label: '电子 / 智能表', key: '/category/smart' },
+        ],
+      },
+      {
+        type: 'group',
+        label: '适用人群',
+        children: [
+          { label: '男士腕表', key: '/category/men' },
+          { label: '女士腕表', key: '/category/women' },
+        ],
+      },
+      {
+        type: 'group',
+        label: '功能特点',
+        children: [
+          { label: '防水腕表', key: '/category/waterproof' },
+          { label: '运动腕表', key: '/category/sport' },
+          { label: '商务腕表', key: '/category/business' },
+        ],
+      },
+      {
+        type: 'group',
+        label: '配件',
+        children: [
+          { label: '表带', key: '/category/band' },
+          { label: '表盒', key: '/category/box' },
+          { label: '其他配件', key: '/category/accessory' },
         ],
       },
     ],
   },
+
+  { key: "/order", icon: () => h(ProfileOutlined), label: "我的订单" },
   {key: "/support", icon: () => h(ToolOutlined), label: "服务与支持"},
   {key: "/about", icon: () => h(InfoCircleOutlined), label: "关于"},
 ]);
