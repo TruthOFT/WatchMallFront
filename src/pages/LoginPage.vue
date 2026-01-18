@@ -83,18 +83,17 @@ const loading = ref(false);
 const formState = reactive({
   userAccount: '',
   userPassword: '',
-  remember: true,
 });
 
 const onFinish = async (values: any) => {
   loading.value = true;
+  console.log(values);
   try {
     const res = await userLogin({
-      body: {
-        userAccount: values.userAccount,
-        userPassword: values.userPassword,
-      },
-    });
+          userAccount: values.userAccount,
+          userPassword: values.userPassword,
+        },
+    );
 
     if (res.data?.code === 0) {
       message.success('登录成功');
@@ -106,7 +105,7 @@ const onFinish = async (values: any) => {
       message.error(res.data?.message || '登录失败');
     }
   } catch (error) {
-    console.error('Login Error:', error);
+    console.error('Login Error:', error)
     message.error('网络错误，请稍后再试');
   } finally {
     loading.value = false;
