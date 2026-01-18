@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import {home} from "@/api/productController";
 const router = useRouter();
 
 const categoryList = ref<any[]>([]);
@@ -22,12 +23,11 @@ const goToDetail = (id: number | string) => {
 };
 
 const fetchData = async () => {
-  categoryList.value = [
-    { id: 1, name: '男士腕表', desc: '商务 · 沉稳', img: '../assets/watches/w1.jpg' },
-    { id: 2, name: '女士腕表', desc: '优雅 · 精致', img: '../assets/watches/w2.jpg' },
-    { id: 3, name: '机械表', desc: '传统工艺', img: '../assets/watches/w1.jpg' },
-    { id: 4, name: '石英表', desc: '精准可靠', img: '../assets/watches/w3.jpg' }
-  ];
+  const res = await home();
+  if (res.code === 0) {
+    categoryList.value = res.data.categoryVOList;
+    heroProduct.value = res.data.productVO;
+  }
 
   heroProduct.value = {
     id: 100,
@@ -95,7 +95,7 @@ onMounted(fetchData);
             <template #cover>
               <img :src="getImageUrl(c.img)" class="card-img-top"/>
             </template>
-            <a-card-meta :title="c.name" :description="c.desc"/>
+            <a-card-meta :title="c.categoryName" :description="c.description"/>
           </a-card>
         </a-col>
       </a-row>

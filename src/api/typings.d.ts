@@ -5,6 +5,18 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseHomeProductVO = {
+    code?: number;
+    data?: HomeProductVO;
+    message?: string;
+  };
+
+  type BaseResponseListProduct = {
+    code?: number;
+    data?: Product[];
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO = {
     code?: number;
     data?: LoginUserVO;
@@ -35,6 +47,13 @@ declare namespace API {
     message?: string;
   };
 
+  type CategoryVO = {
+    id?: number;
+    categoryName?: string;
+    categoryImgUrl?: string;
+    description?: string;
+  };
+
   type DeleteRequest = {
     id?: number;
   };
@@ -45,6 +64,14 @@ declare namespace API {
 
   type getUserVOByIdParams = {
     id: number;
+  };
+
+  type HomeProductVO = {
+    categoryVOList?: CategoryVO[];
+    productVO?: ProductVO;
+    bannerList?: ProductVO[];
+    choiceList?: ProductVO[];
+    recommendList?: ProductVO[];
   };
 
   type LoginUserVO = {
@@ -58,6 +85,42 @@ declare namespace API {
     userRole?: string;
     createTime?: string;
     updateTime?: string;
+  };
+
+  type Product = {
+    id?: number;
+    productName?: string;
+    description?: string;
+    imageUrl?: string;
+    tag?: string;
+    price?: number;
+    stock?: number;
+    title?: string;
+    isHero?: number;
+    isBanner?: number;
+    isChoice?: number;
+    isRec?: number;
+    feature?: string;
+    createTime?: string;
+    updateTime?: string;
+    isDelete?: number;
+  };
+
+  type ProductVO = {
+    id?: number;
+    productName?: string;
+    description?: string;
+    imageUrl?: string;
+    tag?: string;
+    price?: number;
+    stock?: number;
+    title?: string;
+    categoryName?: string;
+    isHero?: number;
+    isBanner?: number;
+    isChoice?: number;
+    isRec?: number;
+    feature?: string[];
   };
 
   type User = {
@@ -86,6 +149,7 @@ declare namespace API {
   type UserLoginRequest = {
     userAccount?: string;
     userPassword?: string;
+    rememberMe?: boolean;
   };
 
   type UserRegisterRequest = {
