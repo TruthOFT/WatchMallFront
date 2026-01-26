@@ -35,7 +35,7 @@ myAxios.interceptors.response.use(
                 window.location.href = `/user/login?redirect=${window.location.href}`
             }
         }
-        return response
+        return response.data
     },
     function (error) {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
@@ -44,4 +44,14 @@ myAxios.interceptors.response.use(
     },
 )
 
-export default myAxios
+export function request<T>(
+    url: string,
+    options: RequestOptions = {},
+): Promise<T> {
+    return myAxios.request<any, T>({
+        url,
+        ...options,
+    })
+}
+
+export default myAxios;
