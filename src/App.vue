@@ -20,8 +20,8 @@ const userStore = useUserStore();
 const doInit = async () => {
   try {
     const res = await getLoginUser();
-    if (res.data?.code === 0 && res.data.data) {
-      userStore.setLoginUser(res.data.data);
+    if (res.code === 0 && res.data) {
+      userStore.setLoginUser(res.data);
     } else {
       await userStore.logout();
     }
