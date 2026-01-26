@@ -81,8 +81,9 @@ const loading = ref(false);
 
 // 表单数据定义
 const formState = reactive({
-  userAccount: '',
-  userPassword: '',
+  userAccount: "",
+  userPassword: "",
+  rememberMe: false,
 });
 
 const onFinish = async (values: any) => {
@@ -90,23 +91,22 @@ const onFinish = async (values: any) => {
   console.log(values);
   try {
     const res = await userLogin({
-          userAccount: values.userAccount,
-          userPassword: values.userPassword,
-        },
-    );
+      userAccount: formState.userAccount,
+      userPassword: formState.userPassword,
+      rememberMe: formState.remember,
+    });
 
-    if (res.data?.code === 0) {
-      message.success('登录成功');
-      userStore.loginUser = res.data.data;
-      userStore.isLogin = true;
-      const redirectPath = route.query.redirect as string || "/"
+    if (res.code === 0) {
+      message.success("登录成功");
+      userStore.setLoginUser(res.data);
+      const redirectPath = (route.query.redirect as string) || "/";
       await router.push(redirectPath);
     } else {
-      message.error(res.data?.message || '登录失败');
+      message.error(res.message || "登录失败");
     }
   } catch (error) {
-    console.error('Login Error:', error)
-    message.error('网络错误，请稍后再试');
+    console.error("Login Error:", error);
+    message.error("网络错误，请稍后再试");
   } finally {
     loading.value = false;
   }
