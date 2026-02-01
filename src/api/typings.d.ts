@@ -58,6 +58,11 @@ declare namespace API {
     id?: number;
   };
 
+  type FeatureItem = {
+    label?: string;
+    value?: string;
+  };
+
   type getUserByIdParams = {
     id: number;
   };
@@ -93,14 +98,12 @@ declare namespace API {
     description?: string;
     imageUrl?: string;
     tag?: string;
-    price?: number;
-    stock?: number;
     title?: string;
+    feature?: string;
     isHero?: number;
     isBanner?: number;
     isChoice?: number;
     isRec?: number;
-    feature?: string;
     createTime?: string;
     updateTime?: string;
     isDelete?: number;
@@ -112,15 +115,8 @@ declare namespace API {
     description?: string;
     imageUrl?: string;
     tag?: string;
-    price?: number;
-    stock?: number;
     title?: string;
-    categoryName?: string;
-    isHero?: number;
-    isBanner?: number;
-    isChoice?: number;
-    isRec?: number;
-    feature?: string[];
+    feature?: FeatureItem[];
   };
 
   type User = {
