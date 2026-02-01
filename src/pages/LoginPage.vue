@@ -2,57 +2,35 @@
   <div class="login-container">
     <div class="login-box">
       <div class="header">
-        <img class="logo" src="../assets/07-deer.svg" alt="logo"/>
+        <img class="logo" src="../assets/07-deer.svg" alt="logo" />
         <h1 class="title">精准之路</h1>
         <p class="desc">欢迎回来，请登录您的账号</p>
       </div>
 
-      <a-form
-          :model="formState"
-          name="login_form"
-          layout="vertical"
-          @finish="onFinish"
-      >
-        <a-form-item
-            label="账号"
-            name="userAccount"
-            :rules="[{ required: true, message: '请输入账号!' }]"
-        >
+      <a-form :model="formState" name="login_form" layout="vertical" @finish="onFinish">
+        <a-form-item label="账号" name="userAccount" :rules="[{ required: true, message: '请输入账号!' }]">
           <a-input v-model:value="formState.userAccount" placeholder="请输入账号">
             <template #prefix>
-              <UserOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+              <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
           </a-input>
         </a-form-item>
 
-        <a-form-item
-            label="密码"
-            name="userPassword"
-            :rules="[{ required: true, message: '请输入密码!' }]"
-        >
-          <a-input-password
-              v-model:value="formState.userPassword"
-              placeholder="请输入密码"
-          >
+        <a-form-item label="密码" name="userPassword" :rules="[{ required: true, message: '请输入密码!' }]">
+          <a-input-password v-model:value="formState.userPassword" placeholder="请输入密码">
             <template #prefix>
-              <LockOutlined style="color: rgba(0, 0, 0, 0.25)"/>
+              <LockOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
           </a-input-password>
         </a-form-item>
 
         <div class="extra-options">
-          <a-checkbox v-model:checked="formState.remember">记住我</a-checkbox>
+          <a-checkbox v-model:checked="formState.rememberMe">记住我</a-checkbox>
           <a-button type="link" size="small">忘记密码？</a-button>
         </div>
 
         <a-form-item>
-          <a-button
-              type="primary"
-              html-type="submit"
-              class="login-button"
-              :loading="loading"
-              block
-          >
+          <a-button type="primary" html-type="submit" class="login-button" :loading="loading" block>
             登 录
           </a-button>
         </a-form-item>
@@ -67,12 +45,12 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue';
-import {UserOutlined, LockOutlined} from '@ant-design/icons-vue';
-import {message} from 'ant-design-vue';
-import {useRoute, useRouter} from 'vue-router';
-import {userLogin} from '@/api/userController'; // 你的 SDK 路径
-import {useUserStore} from '@/config/stores';
+import { reactive, ref } from 'vue';
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
+import { useRoute, useRouter } from 'vue-router';
+import { userLogin } from '@/api/userController'; // 你的 SDK 路径
+import { useUserStore } from '@/config/stores';
 
 const router = useRouter();
 const route = useRoute()
@@ -93,7 +71,7 @@ const onFinish = async (values: any) => {
     const res = await userLogin({
       userAccount: formState.userAccount,
       userPassword: formState.userPassword,
-      rememberMe: formState.remember,
+      rememberMe: formState.rememberMe,
     });
 
     if (res.code === 0) {
@@ -132,7 +110,8 @@ const onFinish = async (values: any) => {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px); /* 背景磨砂效果 */
+  backdrop-filter: blur(4px);
+  /* 背景磨砂效果 */
 }
 
 .header {
