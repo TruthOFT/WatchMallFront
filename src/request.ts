@@ -1,9 +1,10 @@
-import axios from 'axios'
+import axios, { type AxiosRequestConfig } from 'axios'
 import { message } from 'ant-design-vue'
-
+export const BASE_URL = 'http://localhost:8080'
+const CONTEXT_PATH = "/api"
 // 创建 Axios 实例
 const myAxios = axios.create({
-    baseURL: 'http://localhost:8080/api',
+    baseURL: BASE_URL + CONTEXT_PATH,
     timeout: 60000,
     withCredentials: true,
 })
@@ -46,12 +47,11 @@ myAxios.interceptors.response.use(
 
 export function request<T>(
     url: string,
-    options: RequestOptions = {},
+    options: AxiosRequestConfig = {},
 ): Promise<T> {
     return myAxios.request<any, T>({
         url,
         ...options,
     })
 }
-
 export default myAxios;
