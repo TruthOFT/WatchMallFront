@@ -11,10 +11,6 @@ import { onMounted } from 'vue';
 import { useUserStore } from './config/stores';
 import { getLoginUser } from './api/userController';
 import zhCN from 'ant-design-vue/es/locale/zh_CN';
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
-
-dayjs.locale('zh-cn');
 
 const userStore = useUserStore();
 const doInit = async () => {
