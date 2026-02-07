@@ -1,16 +1,15 @@
 // src/config/stores/user.ts
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { LoginUserVo } from "@/api/typings";
 import { userLogout } from "@/api/userController";
 
 export const useUserStore = defineStore(
     "user",
     () => {
-        const loginUser = ref<LoginUserVo>({});
+        const loginUser = ref<API.LoginUserVO>({});
         const isLogin = computed(() => !!loginUser.value?.id || !!loginUser.value?.username);
 
-        const setLoginUser = (user: LoginUserVo) => {
+        const setLoginUser = (user: API.LoginUserVO) => {
             loginUser.value = user ?? {};
         };
 
