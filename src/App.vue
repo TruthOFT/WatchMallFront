@@ -18,11 +18,9 @@ const doInit = async () => {
     const res = await getLoginUser();
     if (res.code === 0 && res.data) {
       userStore.setLoginUser(res.data);
-    } else {
-      await userStore.logout();
     }
   } catch (e) {
-    console.log(e);
+    console.log("Backend not available or error:", e);
   }
 };
 
