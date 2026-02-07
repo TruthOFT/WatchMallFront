@@ -20,7 +20,7 @@
             name="userAccount"
             :rules="[{ required: true, message: '请输入您的账号！' }]"
           >
-            <a-input v-model:value="formState.userAccount" size="large" placeholder="请输入用户名/账号" />
+            <a-input v-model:value="formState.userAccount" class="login-input" size="large" placeholder="请输入用户名/账号" />
           </a-form-item>
 
           <a-form-item
@@ -28,7 +28,7 @@
             name="userPassword"
             :rules="[{ required: true, message: '请输入您的密码！' }]"
           >
-            <a-input-password v-model:value="formState.userPassword" size="large" placeholder="请输入密码" />
+            <a-input-password v-model:value="formState.userPassword" class="login-input" size="large" placeholder="请输入密码" />
           </a-form-item>
 
           <div class="form-actions">
@@ -169,5 +169,25 @@ const onFinish = async (values: any) => {
 .register-link a {
   color: var(--color-cta);
   font-weight: 600;
+}
+
+:deep(.login-input.ant-input),
+:deep(.login-input.ant-input-affix-wrapper) {
+  padding: 12px 16px;
+  border-radius: 0;
+  border: 1px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+:deep(.login-input.ant-input:focus),
+:deep(.login-input.ant-input-affix-wrapper:focus),
+:deep(.login-input.ant-input-affix-wrapper-focused) {
+  border-color: var(--color-cta);
+  box-shadow: none;
+}
+
+:deep(.login-input.ant-input-affix-wrapper .ant-input) {
+  padding: 0;
+  background: transparent;
 }
 </style>
