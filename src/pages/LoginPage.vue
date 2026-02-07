@@ -7,7 +7,7 @@
           <h2>欢迎回来</h2>
           <p>登录您的私人账号</p>
         </div>
-        
+
         <a-form
           :model="formState"
           name="basic"
@@ -20,7 +20,12 @@
             name="userAccount"
             :rules="[{ required: true, message: '请输入您的账号！' }]"
           >
-            <a-input v-model:value="formState.userAccount" class="login-input" size="large" placeholder="请输入用户名/账号" />
+            <a-input
+              v-model:value="formState.userAccount"
+              class="login-input"
+              size="large"
+              placeholder="请输入用户名/账号"
+            />
           </a-form-item>
 
           <a-form-item
@@ -28,7 +33,12 @@
             name="userPassword"
             :rules="[{ required: true, message: '请输入您的密码！' }]"
           >
-            <a-input-password v-model:value="formState.userPassword" class="login-input" size="large" placeholder="请输入密码" />
+            <a-input-password
+              v-model:value="formState.userPassword"
+              class="login-input"
+              size="large"
+              placeholder="请输入密码"
+            />
           </a-form-item>
 
           <div class="form-actions">
@@ -41,9 +51,9 @@
               登录
             </a-button>
           </a-form-item>
-          
+
           <div class="register-link">
-            还不是会员？ <a href="#">申请加入</a>
+            还不是会员？ <router-link to="/user/register">申请加入</router-link>
           </div>
         </a-form>
       </div>
@@ -69,7 +79,7 @@ const formState = reactive({
   rememberMe: false
 });
 
-const onFinish = async (values: any) => {
+const onFinish = async () => {
   loading.value = true;
   try {
     const res = await userLogin(formState);
@@ -113,11 +123,8 @@ const onFinish = async (values: any) => {
 .login-bg::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(5px);
 }
 
