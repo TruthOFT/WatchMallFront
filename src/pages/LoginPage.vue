@@ -1,112 +1,89 @@
 <template>
-  <div class="login-container">
-    <div class="login-box">
-      <div class="header">
-        <img class="logo" src="../assets/07-deer.svg" alt="logo"/>
-        <h1 class="title">精准之路</h1>
-        <p class="desc">欢迎回来，请登录您的账号</p>
-      </div>
-
-      <a-form
+  <div class="login-page">
+    <div class="login-bg"></div>
+    <div class="login-container">
+      <div class="glass-panel login-card liquid-glass">
+        <div class="login-header">
+          <h2>欢迎回来</h2>
+          <p>登录您的私人账号</p>
+        </div>
+        
+        <a-form
           :model="formState"
-          name="login_form"
+          name="basic"
           layout="vertical"
+          autocomplete="off"
           @finish="onFinish"
-      >
-        <a-form-item
+        >
+          <a-form-item
             label="账号"
             name="userAccount"
-            :rules="[{ required: true, message: '请输入账号!' }]"
-        >
-          <a-input v-model:value="formState.userAccount" placeholder="请输入账号">
-            <template #prefix>
-              <UserOutlined style="color: rgba(0, 0, 0, 0.25)"/>
-            </template>
-          </a-input>
-        </a-form-item>
+            :rules="[{ required: true, message: '请输入您的账号！' }]"
+          >
+            <a-input v-model:value="formState.userAccount" size="large" placeholder="请输入用户名/账号" />
+          </a-form-item>
 
-        <a-form-item
+          <a-form-item
             label="密码"
             name="userPassword"
-            :rules="[{ required: true, message: '请输入密码!' }]"
-        >
-          <a-input-password
-              v-model:value="formState.userPassword"
-              placeholder="请输入密码"
+            :rules="[{ required: true, message: '请输入您的密码！' }]"
           >
-            <template #prefix>
-              <LockOutlined style="color: rgba(0, 0, 0, 0.25)"/>
-            </template>
-          </a-input-password>
-        </a-form-item>
+            <a-input-password v-model:value="formState.userPassword" size="large" placeholder="请输入密码" />
+          </a-form-item>
 
-        <div class="extra-options">
-          <a-checkbox v-model:checked="formState.remember">记住我</a-checkbox>
-          <a-button type="link" size="small">忘记密码？</a-button>
-        </div>
+          <div class="form-actions">
+            <a-checkbox v-model:checked="formState.rememberMe">记住我</a-checkbox>
+            <a href="#" class="forgot-link">忘记密码？</a>
+          </div>
 
-        <a-form-item>
-          <a-button
-              type="primary"
-              html-type="submit"
-              class="login-button"
-              :loading="loading"
-              block
-          >
-            登 录
-          </a-button>
-        </a-form-item>
-
-        <div class="footer">
-          还没有账号？
-          <a-button type="link" style="padding: 0">立即注册</a-button>
-        </div>
-      </a-form>
+          <a-form-item>
+            <a-button type="primary" html-type="submit" block size="large" :loading="loading">
+              登录
+            </a-button>
+          </a-form-item>
+          
+          <div class="register-link">
+            还不是会员？ <a href="#">申请加入</a>
+          </div>
+        </a-form>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue';
-import {UserOutlined, LockOutlined} from '@ant-design/icons-vue';
-import {message} from 'ant-design-vue';
-import {useRoute, useRouter} from 'vue-router';
-import {userLogin} from '@/api/userController'; // 你的 SDK 路径
-import {useUserStore} from '@/config/stores';
+import { reactive, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { message } from 'ant-design-vue';
+import { userLogin } from '@/api/userController';
+import { useUserStore } from '@/config/stores';
 
 const router = useRouter();
-const route = useRoute()
+const route = useRoute();
 const userStore = useUserStore();
 const loading = ref(false);
 
-// 表单数据定义
 const formState = reactive({
-  userAccount: "",
-  userPassword: "",
-  rememberMe: false,
+  userAccount: '',
+  userPassword: '',
+  rememberMe: false
 });
 
 const onFinish = async (values: any) => {
   loading.value = true;
-  console.log(values);
   try {
-    const res = await userLogin({
-      userAccount: formState.userAccount,
-      userPassword: formState.userPassword,
-      rememberMe: formState.remember,
-    });
-
-    if (res.code === 0) {
-      message.success("登录成功");
+    const res = await userLogin(formState);
+    if (res.code === 0 && res.data) {
+      message.success('欢迎回来，尊敬的会员。');
       userStore.setLoginUser(res.data);
-      const redirectPath = (route.query.redirect as string) || "/";
-      await router.push(redirectPath);
+      const redirectPath = (route.query.redirect as string) || '/';
+      router.push(redirectPath);
     } else {
-      message.error(res.message || "登录失败");
+      message.error(res.message || '登录失败');
     }
-  } catch (error) {
-    console.error("Login Error:", error);
-    message.error("网络错误，请稍后再试");
+  } catch (error: any) {
+    console.error('Login error:', error);
+    message.error('登录过程中发生错误，请稍后重试。');
   } finally {
     loading.value = false;
   }
@@ -114,64 +91,83 @@ const onFinish = async (values: any) => {
 </script>
 
 <style scoped>
-.login-container {
+.login-page {
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  position: relative;
+  padding: 120px 20px;
+}
+
+.login-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  background-image: url('/bg.png');
-  background-size: cover;
-  background-position: center;
+  height: 100%;
+  background: url('https://images.unsplash.com/photo-1559563458-527698bf5295?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+  z-index: -1;
 }
 
-/* 登录卡片 */
-.login-box {
-  width: 400px;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px); /* 背景磨砂效果 */
+.login-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(5px);
 }
 
-.header {
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-card {
+  padding: 48px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.login-header {
   text-align: center;
   margin-bottom: 32px;
 }
 
-.logo {
-  height: 64px;
-  margin-bottom: 16px;
-}
-
-.title {
-  font-size: 24px;
-  color: #1a1a1a;
-  font-weight: 600;
+.login-header h2 {
   margin-bottom: 8px;
+  font-size: 2rem;
 }
 
-.desc {
-  color: #8c8c8c;
-  font-size: 14px;
+.login-header p {
+  color: var(--color-secondary);
 }
 
-.extra-options {
+.form-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
 }
 
-.login-button {
-  height: 40px;
-  font-size: 16px;
+.forgot-link {
+  color: var(--color-primary);
+  font-size: 0.9rem;
 }
 
-.footer {
+.register-link {
   text-align: center;
   margin-top: 16px;
-  color: #595959;
+  font-size: 0.9rem;
+  color: var(--color-secondary);
+}
+
+.register-link a {
+  color: var(--color-cta);
+  font-weight: 600;
 }
 </style>

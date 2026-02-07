@@ -1,147 +1,144 @@
 <template>
-  <div class="support-container">
-    <div class="support-header">
-      <h1>服务与支持</h1>
-      <p>有什么可以帮到您的？我们随时为您提供技术支持与解决方案</p>
-      <a-input-search
-        placeholder="搜索常见问题或操作指南..."
-        enter-button="搜索"
-        size="large"
-        class="search-bar"
-        @search="onSearch"
-      />
-    </div>
+  <div class="page-container">
+    <div class="container">
+      <div class="page-header">
+        <h1>Concierge Support</h1>
+        <p>We are at your service.</p>
+      </div>
 
-    <div class="support-content">
-      <a-row :gutter="[24, 24]">
-        <a-col :xs="24" :sm="12" :md="6">
-          <a-card hoverable class="support-card">
-            <template #cover>
-              <div class="icon-wrapper"><BookOutlined /></div>
-            </template>
-            <a-card-meta title="使用文档" description="详细的产品操作手册" />
-          </a-card>
-        </a-col>
-        <a-col :xs="24" :sm="12" :md="6">
-          <a-card hoverable class="support-card">
-            <template #cover>
-              <div class="icon-wrapper"><CustomerServiceOutlined /></div>
-            </template>
-            <a-card-meta title="在线客服" description="即时解答您的疑问" />
-          </a-card>
-        </a-col>
-        <a-col :xs="24" :sm="12" :md="6">
-          <a-card hoverable class="support-card">
-            <template #cover>
-              <div class="icon-wrapper"><FileProtectOutlined /></div>
-            </template>
-            <a-card-meta title="售后保障" description="退换货及维修政策" />
-          </a-card>
-        </a-col>
-        <a-col :xs="24" :sm="12" :md="6">
-          <a-card hoverable class="support-card">
-            <template #cover>
-              <div class="icon-wrapper"><ThunderboltOutlined /></div>
-            </template>
-            <a-card-meta title="快速入门" description="3分钟上手精准之路" />
-          </a-card>
-        </a-col>
-      </a-row>
+      <div class="support-grid">
+        <div class="contact-info liquid-glass">
+          <h3>Get in Touch</h3>
+          <p>Our dedicated concierge team is available 24/7 to assist with your inquiries.</p>
+          
+          <div class="info-item">
+            <span class="label">Client Services</span>
+            <span class="value">+1 (888) 123-4567</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="label">Email</span>
+            <span class="value">concierge@watchmall.com</span>
+          </div>
 
-      <div class="faq-section">
-        <h2 class="section-title">常见问题 (FAQ)</h2>
-        <a-collapse v-model:activeKey="activeKey" ghost>
-          <a-collapse-panel key="1" header="如何找回登录密码？">
-            <p>您可以在登录页面点击“忘记密码”，通过绑定的手机号或邮箱进行校验并重置。</p>
-          </a-collapse-panel>
-          <a-collapse-panel key="2" header="精准之路提供哪些技术服务？">
-            <p>我们提供全天候的云端监控、自动化部署支持以及一对一的专家咨询服务。</p>
-          </a-collapse-panel>
-          <a-collapse-panel key="3" header="购买服务后如何申请发票？">
-            <p>登录后台进入“个人中心 - 订单管理”，选择对应订单点击“申请开票”即可。</p>
-          </a-collapse-panel>
-        </a-collapse>
+          <div class="info-item">
+            <span class="label">Boutique</span>
+            <span class="value">123 Luxury Ave, New York, NY 10001</span>
+          </div>
+        </div>
+
+        <div class="contact-form-container">
+          <div class="glass-panel form-panel">
+            <h3>Send a Message</h3>
+            <a-form layout="vertical">
+              <a-form-item label="Name">
+                <a-input size="large" />
+              </a-form-item>
+              <a-form-item label="Email">
+                <a-input size="large" />
+              </a-form-item>
+              <a-form-item label="Subject">
+                <a-select size="large">
+                  <a-select-option value="inquiry">Product Inquiry</a-select-option>
+                  <a-select-option value="service">Service Request</a-select-option>
+                  <a-select-option value="appointment">Book Appointment</a-select-option>
+                </a-select>
+              </a-form-item>
+              <a-form-item label="Message">
+                <a-textarea :rows="4" />
+              </a-form-item>
+              <a-button type="primary" size="large" block>SEND MESSAGE</a-button>
+            </a-form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import {
-  BookOutlined,
-  CustomerServiceOutlined,
-  FileProtectOutlined,
-  ThunderboltOutlined
-} from '@ant-design/icons-vue';
-
-const activeKey = ref(['1']);
-const onSearch = (value: string) => {
-  console.log('用户搜索支持内容:', value);
-};
-</script>
-
 <style scoped>
-.support-container {
-  background-color: #f5f7fa;
-  min-height: 100vh;
-  padding-bottom: 50px;
+.page-container {
+  padding: 120px 0 80px;
+  background-color: var(--color-bg-main);
+  min-height: 80vh;
 }
 
-.support-header {
-  background: linear-gradient(135deg, #1890ff 0%, #001529 100%);
-  padding: 80px 20px;
-  text-align: center;
-  color: white;
-}
-
-.support-header h1 {
-  color: white;
-  font-size: 32px;
-  margin-bottom: 16px;
-}
-
-.support-header p {
-  font-size: 16px;
-  opacity: 0.8;
-  margin-bottom: 30px;
-}
-
-.search-bar {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.support-content {
+.container {
   max-width: 1200px;
-  margin: -40px auto 0;
-  padding: 0 20px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-.support-card {
+.page-header {
   text-align: center;
-  border-radius: 8px;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 60px;
 }
 
-.icon-wrapper {
-  padding: 30px 0 10px;
-  font-size: 40px;
-  color: #1890ff;
+.page-header h1 {
+  font-size: 3rem;
 }
 
-.faq-section {
-  margin-top: 60px;
-  background: white;
+.page-header p {
+  color: var(--color-secondary);
+  font-size: 1.2rem;
+  font-family: var(--font-heading);
+}
+
+.support-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 60px;
+}
+
+.contact-info {
   padding: 40px;
-  border-radius: 8px;
+  height: fit-content;
 }
 
-.section-title {
+.contact-info h3 {
+  font-size: 1.5rem;
   margin-bottom: 24px;
-  padding-left: 12px;
-  border-left: 4px solid #1890ff;
-  font-size: 20px;
+}
+
+.contact-info p {
+  margin-bottom: 32px;
+  line-height: 1.6;
+  color: var(--color-secondary);
+}
+
+.info-item {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item .label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--color-cta);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.info-item .value {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--color-primary);
+}
+
+.form-panel {
+  padding: 40px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.form-panel h3 {
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .support-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
