@@ -82,14 +82,15 @@ declare namespace API {
   type LoginUserVO = {
     id?: number;
     username?: string;
-    avatarUrl?: string;
     userAccount?: string;
-    gender?: number;
     email?: string;
     phone?: string;
-    userRole?: string;
     createTime?: string;
     updateTime?: string;
+    avatarUrl?: string;
+    gender?: number;
+    balance?: number;
+    userRole?: number;
   };
 
   type Product = {
@@ -172,11 +173,17 @@ declare namespace API {
 
   type UserVO = {
     id?: number;
-    userName?: string;
-    userAvatar?: string;
-    userProfile?: string;
-    userRole?: string;
+    username?: string;
+    userAccount?: string;
+    email?: string;
+    userPassword?: string;
+    phone?: string;
     createTime?: string;
+    updateTime?: string;
+    avatarUrl?: string;
+    gender?: number;
     balance?: number;
+    isDelete?: number;
+    userRole?: number;
   };
 }
