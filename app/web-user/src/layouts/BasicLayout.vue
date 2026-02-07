@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="logo">
           <router-link to="/">
-            WATCHMALL | 腕表名邸
+            PRECISION PATH | 精准之路
           </router-link>
         </div>
         
@@ -86,7 +86,7 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-brand">
-          <h3>WATCHMALL</h3>
+          <h3>PRECISION PATH</h3>
           <p>为现代鉴赏家重新定义时光。</p>
         </div>
         <div class="footer-links">
@@ -111,7 +111,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 WATCHMALL 腕表名邸. 版权所有.</p>
+        <p>&copy; 2026 PRECISION PATH 精准之路. 版权所有.</p>
       </div>
     </footer>
   </div>
@@ -395,7 +395,114 @@ onUnmounted(() => {
 .footer {
   background-color: var(--color-primary);
   color: var(--color-text-light);
-  padding: 80px 0 32px;
+  padding: 100px 0 48px;
+  font-family: var(--font-body);
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  gap: 100px;
+  margin-bottom: 80px;
+}
+
+.footer-brand {
+  flex: 1;
+}
+
+.footer-brand h3 {
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 24px;
+  letter-spacing: 3px;
+  margin-bottom: 24px;
+}
+
+.footer-brand p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 280px;
+}
+
+.footer-links {
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 80px;
+}
+
+.link-group h4 {
+  color: #fff;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+  font-weight: 600;
+}
+
+.link-group a {
+  display: block;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.link-group a:hover {
+  color: var(--color-cta);
+  transform: translateX(5px);
+}
+
+.footer-bottom {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 40px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.footer-bottom p {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+/* 响应式处理 */
+@media (max-width: 1024px) {
+  .footer-content {
+    gap: 60px;
+  }
+  .footer-links {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 60px 0 32px;
+  }
+  .footer-content {
+    flex-direction: column;
+    gap: 60px;
+    text-align: center;
+  }
+  .footer-brand p {
+    max-width: 100%;
+  }
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+  }
+  .link-group h4 {
+    margin-bottom: 24px;
+  }
 }
 
 /* 响应式处理 */

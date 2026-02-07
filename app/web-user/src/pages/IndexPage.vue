@@ -4,11 +4,11 @@
     <section class="hero-section">
       <a-carousel autoplay effect="fade" :autoplaySpeed="5000">
         <div v-for="item in heroItems" :key="item.id" class="hero-slide">
-          <div class="hero-bg" :style="{ backgroundImage: `url(${item.image})` }"></div>
+          <div class="hero-bg" :style="{ backgroundImage: `url(${item.imageUrl})` }"></div>
           <div class="hero-content">
             <div class="glass-panel hero-glass">
               <h1 class="hero-title">{{ item.title }}</h1>
-              <p class="hero-subtitle">{{ item.subtitle }}</p>
+              <p class="hero-subtitle">{{ item.description }}</p>
               <a-button type="primary" size="large" class="hero-cta">探索系列</a-button>
             </div>
           </div>
@@ -27,9 +27,7 @@
             <a href="#" class="text-link">阅读我们的故事</a>
           </div>
           <div class="story-visual liquid-glass">
-            <div class="visual-placeholder">
-              <span>动态艺术</span>
-            </div>
+            <div class="story-image" :style="{ backgroundImage: `url(${storyImage})` }"></div>
           </div>
         </div>
       </div>
@@ -44,11 +42,11 @@
         </div>
         <div class="collections-grid">
           <div v-for="col in collections" :key="col.id" class="collection-card liquid-glass">
-            <div class="col-image" :style="{ backgroundImage: `url(${col.image})` }"></div>
+            <div class="col-image" :style="{ backgroundImage: `url(${col.categoryImgUrl})` }"></div>
             <div class="col-overlay">
               <div class="col-text">
-                <h3>{{ col.name }}</h3>
-                <p>{{ col.desc }}</p>
+                <h3>{{ col.categoryName }}</h3>
+                <p>{{ col.description }}</p>
                 <a-button type="link" class="explore-btn">立即探索 <arrow-right-outlined /></a-button>
               </div>
             </div>
@@ -67,10 +65,10 @@
         
         <div class="product-grid">
           <div v-for="product in products" :key="product.id" class="product-card liquid-glass">
-            <div class="product-image" :style="{ backgroundImage: `url(${product.image})` }"></div>
+            <div class="product-image" :style="{ backgroundImage: `url(${product.imageUrl})` }"></div>
             <div class="product-info">
-              <h3>{{ product.name }}</h3>
-              <p class="price">{{ product.price }}</p>
+              <h3>{{ product.productName }}</h3>
+              <p class="price">{{ product.price ?? '无价' }}</p>
               <a-button type="text" class="shop-btn">查看详情</a-button>
             </div>
           </div>
@@ -102,65 +100,46 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { ArrowRightOutlined } from '@ant-design/icons-vue';
+import { home } from '@/api/productController';
+import { BASE_URL } from '@/request';
+const heroItems = ref<API.ProductVO[]>([]);
+const storyImage = ref("");
+const products = ref<API.ProductVO[]>([]);
+const collections = ref<API.CategoryVO[]>([]);
+const fetchData = async () => {
 
-const heroItems = ref([
-  {
-    id: 1,
-    title: "永恒的雅致",
-    subtitle: "领略钟表艺术的巅峰之作。",
-    image: "https://images.unsplash.com/photo-1547996663-b855816e2b61?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-  },
-  {
-    id: 2,
-    title: "现代传承",
-    subtitle: "传统与当代设计的完美融合。",
-    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
-  },
-  {
-    id: 3,
-    title: "精准定义",
-    subtitle: "为珍惜每一秒的您而设计。",
-    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"
+  try {
+    const res = await home();
+    if (res.code === 0) {
+      let tmpBannerLst = res.data.bannerList;
+      tmpBannerLst = tmpBannerLst.map(item => ({
+        ...item,
+        imageUrl: BASE_URL + item.imageUrl
+      }))
+      heroItems.value = tmpBannerLst;
+      storyImage.value = BASE_URL + res.data.productVO.imageUrl;
+      let tmpProducts = res.data.recommendList;
+      tmpProducts = tmpProducts.map(item => ({
+        ...item,
+        imageUrl: BASE_URL + item.imageUrl
+      }))
+      products.value = tmpProducts;
+      let tmpCollection = res.data.categoryVOList;
+      tmpCollection = tmpCollection.map(item => ({
+        ...item,
+        categoryImgUrl: BASE_URL + item.categoryImgUrl
+      }))
+      collections.value = tmpCollection;
+    }
+  } catch (error) {
+    console.log(error);
   }
-]);
 
-const collections = ref([
-  {
-    id: 1,
-    name: "大巡航系列",
-    desc: "专为探索无尽深蓝而生。",
-    image: "https://images.unsplash.com/photo-1517466100529-67d7162985f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 2,
-    name: "恒动美学",
-    desc: "极简主义与极致工艺的平衡。",
-    image: "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-  }
-]);
+}
 
-const products = ref([
-  {
-    id: 1,
-    name: "皇家橡树离岸型",
-    price: "¥205,000",
-    image: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id: 2,
-    name: "鹦鹉螺 Ref. 5711",
-    price: "¥250,000",
-    image: "https://images.unsplash.com/photo-1548171915-e79a380a2a4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  },
-  {
-    id: 3,
-    name: "超霸系列登月表",
-    price: "¥54,500",
-    image: "https://images.unsplash.com/photo-1623998021450-85c29c644e0d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-  }
-]);
+onMounted( async () => await fetchData() )
 </script>
 
 <style scoped>
@@ -308,18 +287,19 @@ const products = ref([
   justify-content: center;
   position: relative;
   overflow: hidden;
+  border-radius: 24px;
 }
 
-.visual-placeholder {
+.story-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #f3f3f3, #e9e9e9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-heading);
-  font-size: 2rem;
-  color: #ccc;
+  background-size: cover;
+  background-position: center;
+  transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.story-visual:hover .story-image {
+  transform: scale(1.1);
 }
 
 /* Collections Gallery (New) */
