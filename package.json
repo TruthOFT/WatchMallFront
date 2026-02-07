@@ -10,6 +10,9 @@
     "openapi2ts": "openapi2ts"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/playfair-display": "^5.2.8",
     "ant-design-vue": "^4.2.6",
     "axios": "^1.13.2",
     "pinia": "^3.0.4",
