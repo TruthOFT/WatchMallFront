@@ -4,7 +4,7 @@
     <section class="hero-section">
       <a-carousel autoplay effect="fade" :autoplaySpeed="5000">
         <div v-for="item in heroItems" :key="item.id" class="hero-slide">
-          <div class="hero-bg" :style="{ backgroundImage: `url(${item.imageUrl})` }"></div>
+          <div class="hero-bg" :style="{ backgroundImage: `url(${item.url})` }"></div>
           <div class="hero-content">
             <div class="glass-panel hero-glass">
               <h1 class="hero-title">{{ item.title }}</h1>
@@ -42,10 +42,10 @@
         </div>
         <div class="collections-grid">
           <div v-for="col in collections" :key="col.id" class="collection-card liquid-glass">
-            <div class="col-image" :style="{ backgroundImage: `url(${col.categoryImgUrl})` }"></div>
+            <div class="col-image" :style="{ backgroundImage: `url(${col.icon})` }"></div>
             <div class="col-overlay">
               <div class="col-text">
-                <h3>{{ col.categoryName }}</h3>
+                <h3>{{ col.name }}</h3>
                 <p>{{ col.description }}</p>
                 <a-button type="link" class="explore-btn">立即探索 <arrow-right-outlined /></a-button>
               </div>
@@ -65,9 +65,9 @@
         
         <div class="product-grid">
           <div v-for="product in products" :key="product.id" class="product-card liquid-glass">
-            <div class="product-image" :style="{ backgroundImage: `url(${product.imageUrl})` }"></div>
+            <div class="product-image" :style="{ backgroundImage: `url(${product.url})` }"></div>
             <div class="product-info">
-              <h3>{{ product.productName }}</h3>
+              <h3>{{ product.name }}</h3>
               <p class="price">{{ product.price ?? '无价' }}</p>
               <a-button type="text" class="shop-btn">查看详情</a-button>
             </div>
@@ -116,22 +116,24 @@ const fetchData = async () => {
       let tmpBannerLst = res.data.bannerList;
       tmpBannerLst = tmpBannerLst.map(item => ({
         ...item,
-        imageUrl: BASE_URL + item.imageUrl
+        url: BASE_URL + item.url
       }))
       heroItems.value = tmpBannerLst;
-      storyImage.value = BASE_URL + res.data.productVO.imageUrl;
+      console.log(heroItems.value)
+      storyImage.value = BASE_URL + res.data.productVO.url;
       let tmpProducts = res.data.recommendList;
       tmpProducts = tmpProducts.map(item => ({
         ...item,
-        imageUrl: BASE_URL + item.imageUrl
+        url: BASE_URL + item.url
       }))
       products.value = tmpProducts;
       let tmpCollection = res.data.categoryVOList;
       tmpCollection = tmpCollection.map(item => ({
         ...item,
-        categoryImgUrl: BASE_URL + item.categoryImgUrl
+        icon: BASE_URL + item.icon
       }))
       collections.value = tmpCollection;
+      console.log(collections.value)
     }
   } catch (error) {
     console.log(error);

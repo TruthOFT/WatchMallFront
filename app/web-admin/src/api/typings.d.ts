@@ -122,7 +122,8 @@ declare namespace API {
     title?: string;
     brandId?: number;
     description?: string;
-    feature?: FeatureItem[];
+    feature?: string;
+    featureLst?: FeatureItem[];
     tags?: string;
     price?: number;
     status?: number;
