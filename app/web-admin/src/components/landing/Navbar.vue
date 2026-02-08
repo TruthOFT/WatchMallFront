@@ -9,7 +9,9 @@
         <a href="#">Success Stories</a>
       </div>
       <div class="nav-actions">
-        <a-button type="text" class="desktop-only">Log In</a-button>
+        <router-link to="/login">
+          <a-button type="text" class="desktop-only">Log In</a-button>
+        </router-link>
         <a-button type="primary" shape="round">Donate</a-button>
       </div>
     </div>
