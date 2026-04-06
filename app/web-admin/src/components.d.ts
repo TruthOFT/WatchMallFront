@@ -53,6 +53,7 @@ declare module 'vue' {
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
     APopconfirm: typeof import('ant-design-vue/es')['Popconfirm']
+    AppFooter: typeof import('./components/landing/AppFooter.vue')['default']
     ARadio: typeof import('ant-design-vue/es')['Radio']
     ARadioGroup: typeof import('ant-design-vue/es')['RadioGroup']
     ARangePicker: typeof import('ant-design-vue/es')['RangePicker']
@@ -79,7 +80,13 @@ declare module 'vue' {
     AUpload: typeof import('ant-design-vue/es')['Upload']
     AWatermark: typeof import('ant-design-vue/es')['Watermark']
     GlobalHeader: typeof import('./components/GlobalHeader.vue')['default']
+    HeroSection: typeof import('./components/landing/HeroSection.vue')['default']
+    LandingPage: typeof import('./components/landing/LandingPage.vue')['default']
+    Navbar: typeof import('./components/landing/Navbar.vue')['default']
+    Partners: typeof import('./components/landing/Partners.vue')['default']
+    PetCards: typeof import('./components/landing/PetCards.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SuccessStories: typeof import('./components/landing/SuccessStories.vue')['default']
   }
 }
