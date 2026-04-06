@@ -8,8 +8,12 @@ import CartPage from "@/pages/CartPage.vue";
 import FaqPage from "@/pages/FaqPage.vue";
 import ProfilePage from "@/pages/ProfilePage.vue";
 import OrderPage from "@/pages/OrderPage.vue";
+import FavoritePage from "@/pages/FavoritePage.vue";
 import SettingPage from "@/pages/SettingPage.vue";
 import IndexPage from '@/pages/IndexPage.vue';
+import ProductDetailPage from '@/pages/ProductDetailPage.vue';
+import CategoryProductListPage from '@/pages/CategoryProductListPage.vue';
+import SearchProductPage from '@/pages/SearchProductPage.vue';
 import { message } from "ant-design-vue"
 import { useUserStore } from './stores';
 const routes = [
@@ -20,18 +24,37 @@ const routes = [
             {
                 path: "",
                 component: IndexPage,
+                meta: { public: true },
+            },
+            {
+                path: "product/:id",
+                component: ProductDetailPage,
+                meta: { public: true },
+            },
+            {
+                path: "category/:categoryId",
+                component: CategoryProductListPage,
+                meta: { public: true },
+            },
+            {
+                path: "search",
+                component: SearchProductPage,
+                meta: { public: true },
             },
             {
                 path: "support",
                 component: SupportPage,
+                meta: { public: true },
             },
             {
                 path: "about",
                 component: AboutPage,
+                meta: { public: true },
             },
             {
                 path: "faq",
                 component: FaqPage,
+                meta: { public: true },
             }
         ]
     },
@@ -42,11 +65,13 @@ const routes = [
         children: [
             {
                 path: "login",
-                component: LoginPage
+                component: LoginPage,
+                meta: { public: true },
             },
             {
                 path: "register",
-                component: RegisterPage
+                component: RegisterPage,
+                meta: { public: true },
             },
             {
                 path: "profile",
@@ -55,6 +80,10 @@ const routes = [
             {
                 path: 'orders',
                 component: OrderPage
+            },
+            {
+                path: "favorites",
+                component: FavoritePage
             },
             {
                 path: "cart",
@@ -66,12 +95,18 @@ const routes = [
             }
         ]
     },
+    {
+        path: "/settings",
+        redirect: "/user/settings",
+    },
 ]
 
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
     scrollBehavior(to, from, savedPosition) {
+        void to
+        void from
         if (savedPosition) {
             return savedPosition
         } else {
@@ -80,18 +115,12 @@ const router = createRouter({
     },
 })
 
-const whiteList = ["/", "/user/login", "/user/register", "/support", "/about", "/faq"]
-
 router.beforeEach((to, from, next) => {
-    // For this demo, we'll be lenient with auth to show the pages.
-    // In a real app, you'd check auth for cart checkout or profile pages.
-
-    // Original Auth Logic preserved but commented out for demo purposes to ensure UI is visible without backend:
+    void from
     const userStore = useUserStore()
     const isLogin = !!userStore.loginUser.id;
-    console.log(to.path);
-    
-    if (to.path.startsWith('/user/login') || whiteList.includes(to.path) || isLogin) {
+
+    if (to.matched.some((record) => record.meta?.public) || isLogin) {
         next()
     } else {
         message.error("Please login first")
