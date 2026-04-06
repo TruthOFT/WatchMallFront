@@ -1,39 +1,65 @@
 <template>
   <div class="landing-page">
-    <!-- 英雄区与无限轮播 -->
     <section class="hero-section">
       <a-carousel autoplay effect="fade" :autoplaySpeed="5000">
-        <div v-for="item in heroItems" :key="item.id" class="hero-slide">
-          <div class="hero-bg" :style="{ backgroundImage: `url(${item.url})` }"></div>
+        <div
+          v-for="item in heroItems"
+          :key="item.id"
+          class="hero-slide clickable"
+          @click="goToProductDetail(item.id)"
+        >
+          <div
+            class="hero-bg"
+            :style="{ backgroundImage: `url(${item.url})` }"
+          ></div>
           <div class="hero-content">
             <div class="glass-panel hero-glass">
               <h1 class="hero-title">{{ item.title }}</h1>
               <p class="hero-subtitle">{{ item.description }}</p>
-              <a-button type="primary" size="large" class="hero-cta">探索系列</a-button>
+              <a-button
+                type="primary"
+                size="large"
+                class="hero-cta"
+                @click.stop="goToProductDetail(item.id)"
+              >
+                探索系列
+              </a-button>
             </div>
           </div>
         </div>
       </a-carousel>
     </section>
 
-    <!-- 品牌价值 / 叙事区 -->
     <section class="story-section">
       <div class="container">
         <div class="story-grid">
           <div class="story-content">
-            <span class="eyebrow">卓越工匠精神</span>
+            <span class="eyebrow">卓越工艺精神</span>
             <h2>精准与优雅的邂逅</h2>
-            <p>我们系列中的每一枚时计都讲述着传承、创新与不妥协品质的故事。我们只精选最顶级的腕表，使其超越简单的计时工具，成为未来的传世之宝。</p>
-            <a href="#" class="text-link">阅读我们的故事</a>
+            <p>
+              我们系列中的每一枚时计都讲述着传承、创新与不妥协品质的故事。我们只精选最顶级的腕表，
+              使其超越简单的计时工具，成为未来的传世之宝。
+            </p>
+            <a
+              class="text-link clickable-link"
+              @click.prevent="goToProductDetail(featuredProduct?.id)"
+            >
+              阅读我们的故事
+            </a>
           </div>
-          <div class="story-visual liquid-glass">
-            <div class="story-image" :style="{ backgroundImage: `url(${storyImage})` }"></div>
+          <div
+            class="story-visual liquid-glass clickable"
+            @click="goToProductDetail(featuredProduct?.id)"
+          >
+            <div
+              class="story-image"
+              :style="{ backgroundImage: `url(${storyImage})` }"
+            ></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 系列推荐 (新加部分) -->
     <section class="collections-gallery">
       <div class="container">
         <div class="section-header">
@@ -41,13 +67,28 @@
           <h2>定义您的风格</h2>
         </div>
         <div class="collections-grid">
-          <div v-for="col in collections" :key="col.id" class="collection-card liquid-glass">
-            <div class="col-image" :style="{ backgroundImage: `url(${col.icon})` }"></div>
+          <div
+            v-for="col in collections"
+            :key="col.id"
+            class="collection-card liquid-glass"
+            @click="goToCategoryPage(col.id)"
+          >
+            <div
+              class="col-image"
+              :style="{ backgroundImage: `url(${col.icon})` }"
+            ></div>
             <div class="col-overlay">
               <div class="col-text">
                 <h3>{{ col.name }}</h3>
                 <p>{{ col.description }}</p>
-                <a-button type="link" class="explore-btn">立即探索 <arrow-right-outlined /></a-button>
+                <a-button
+                  type="link"
+                  class="explore-btn"
+                  @click.stop="goToCategoryPage(col.id)"
+                >
+                  立即探索
+                  <arrow-right-outlined />
+                </a-button>
               </div>
             </div>
           </div>
@@ -55,28 +96,40 @@
       </div>
     </section>
 
-    <!-- 精选产品展示 -->
     <section class="showcase-section">
       <div class="container">
         <div class="section-header">
           <h2>甄选精品</h2>
           <p>为少数鉴赏家悉心挑选。</p>
         </div>
-        
+
         <div class="product-grid">
-          <div v-for="product in products" :key="product.id" class="product-card liquid-glass">
-            <div class="product-image" :style="{ backgroundImage: `url(${product.url})` }"></div>
+          <div
+            v-for="product in products"
+            :key="product.id"
+            class="product-card liquid-glass"
+            @click="goToProductDetail(product.id)"
+          >
+            <div
+              class="product-image"
+              :style="{ backgroundImage: `url(${product.url})` }"
+            ></div>
             <div class="product-info">
               <h3>{{ product.name }}</h3>
-              <p class="price">{{ product.price ?? '无价' }}</p>
-              <a-button type="text" class="shop-btn">查看详情</a-button>
+              <p class="price">{{ formatPrice(product.price) }}</p>
+              <a-button
+                type="text"
+                class="shop-btn"
+                @click.stop="goToProductDetail(product.id)"
+              >
+                查看详情
+              </a-button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 独家会员 CTA -->
     <section class="membership-section">
       <div class="membership-bg"></div>
       <div class="container membership-container">
@@ -84,13 +137,17 @@
           <div class="membership-content">
             <span class="eyebrow text-gradient-gold">尊享俱乐部</span>
             <h2 class="text-light">开启非凡体验</h2>
-            <p class="text-light-muted">加入我们的独家会员俱乐部，优先获取限量版资讯、参加私人鉴赏会并享受定制礼宾服务。</p>
+            <p class="text-light-muted">
+              加入我们的独家会员俱乐部，优先获取限量版资讯、参加私人鉴赏会并享受定制礼宾服务。
+            </p>
             <div class="membership-form">
               <a-input placeholder="您的电子邮箱地址" size="large" />
               <a-button type="primary" size="large">申请加入</a-button>
             </div>
             <p class="waitlist-count">
-              已有 <span class="count text-gradient-gold">2,481</span> 位鉴赏家在候补名单中
+              已有
+              <span class="count text-gradient-gold">2,481</span>
+              位鉴赏家在候补名单中
             </p>
           </div>
         </div>
@@ -100,53 +157,99 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { ArrowRightOutlined } from '@ant-design/icons-vue';
-import { home } from '@/api/productController';
-import { BASE_URL } from '@/request';
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import { ArrowRightOutlined } from "@ant-design/icons-vue";
+import { home } from "@/api/productController";
+import { resolveAssetUrl } from "@/utils/asset";
+import { normalizeRouteId } from "@/utils/route";
+
+const router = useRouter();
+
 const heroItems = ref<API.ProductVO[]>([]);
+const featuredProduct = ref<API.ProductVO>();
 const storyImage = ref("");
 const products = ref<API.ProductVO[]>([]);
 const collections = ref<API.CategoryVO[]>([]);
-const fetchData = async () => {
 
+const formatPrice = (price?: number) => {
+  if (typeof price !== "number") {
+    return "价格待定";
+  }
+  return `¥${price.toFixed(2)}`;
+};
+
+const goToProductDetail = (productId?: string | number | null) => {
+  const nextId = normalizeRouteId(productId);
+  if (!nextId) {
+    return;
+  }
+  void router.push(`/product/${nextId}`);
+};
+
+const goToCategoryPage = (categoryId?: string | number | null) => {
+  const nextId = normalizeRouteId(categoryId);
+  if (!nextId) {
+    return;
+  }
+  void router.push({
+    path: `/category/${nextId}`,
+    query: { page: "1" },
+  });
+};
+
+const fetchData = async () => {
   try {
     const res = await home();
-    if (res.code === 0) {
-      let tmpBannerLst = res.data.bannerList;
-      tmpBannerLst = tmpBannerLst.map(item => ({
-        ...item,
-        url: BASE_URL + item.url
-      }))
-      heroItems.value = tmpBannerLst;
-      console.log(heroItems.value)
-      storyImage.value = BASE_URL + res.data.productVO.url;
-      let tmpProducts = res.data.recommendList;
-      tmpProducts = tmpProducts.map(item => ({
-        ...item,
-        url: BASE_URL + item.url
-      }))
-      products.value = tmpProducts;
-      let tmpCollection = res.data.categoryVOList;
-      tmpCollection = tmpCollection.map(item => ({
-        ...item,
-        icon: BASE_URL + item.icon
-      }))
-      collections.value = tmpCollection;
-      console.log(collections.value)
+    if (res.code !== 0 || !res.data) {
+      return;
     }
+
+    heroItems.value = (res.data.bannerList ?? []).map((item) => ({
+      ...item,
+      url: resolveAssetUrl(item.url),
+    }));
+
+    featuredProduct.value = res.data.productVO
+      ? {
+          ...res.data.productVO,
+          url: resolveAssetUrl(res.data.productVO.url),
+        }
+      : undefined;
+    storyImage.value = featuredProduct.value?.url ?? "";
+
+    products.value = (res.data.recommendList ?? [])
+      .slice(0, 3)
+      .map((item) => ({
+        ...item,
+        url: resolveAssetUrl(item.url),
+      }));
+
+    collections.value = (res.data.categoryVOList ?? []).map((item) => ({
+      ...item,
+      icon: resolveAssetUrl(item.icon),
+    }));
   } catch (error) {
     console.log(error);
   }
+};
 
-}
-
-onMounted( async () => await fetchData() )
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <style scoped>
 .landing-page {
   width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable-link {
+  cursor: pointer;
 }
 
 .hero-section {
@@ -181,7 +284,7 @@ onMounted( async () => await fetchData() )
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .hero-glass {
@@ -204,12 +307,11 @@ onMounted( async () => await fetchData() )
 
 .hero-subtitle {
   font-size: 1.25rem;
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 40px;
   font-weight: 300;
 }
 
-/* Sections Common */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -258,7 +360,6 @@ onMounted( async () => await fetchData() )
   color: var(--color-cta);
 }
 
-/* Story Section */
 .story-section {
   padding: 120px 0;
   background-color: var(--color-bg-main);
@@ -304,7 +405,6 @@ onMounted( async () => await fetchData() )
   transform: scale(1.1);
 }
 
-/* Collections Gallery (New) */
 .collections-gallery {
   padding: 100px 0;
   background-color: #fff;
@@ -342,7 +442,11 @@ onMounted( async () => await fetchData() )
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0) 50%
+  );
   display: flex;
   align-items: flex-end;
   padding: 48px;
@@ -355,7 +459,7 @@ onMounted( async () => await fetchData() )
 }
 
 .col-text p {
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   margin-bottom: 24px;
   max-width: 300px;
@@ -368,7 +472,6 @@ onMounted( async () => await fetchData() )
   font-weight: 600;
 }
 
-/* Product Showcase */
 .showcase-section {
   padding: 120px 0;
   background-color: var(--color-bg-main);
@@ -401,9 +504,9 @@ onMounted( async () => await fetchData() )
 
 .product-info {
   padding: 24px;
-  background: rgba(255,255,255,0.6);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   text-align: center;
 }
 
@@ -424,7 +527,6 @@ onMounted( async () => await fetchData() )
   color: var(--color-secondary);
 }
 
-/* Membership Section */
 .membership-section {
   padding: 120px 0;
   background-color: #000;
@@ -438,7 +540,8 @@ onMounted( async () => await fetchData() )
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://images.unsplash.com/photo-1492106087820-71f17178f48b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+  background: url("https://images.unsplash.com/photo-1492106087820-71f17178f48b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")
+    center/cover;
   opacity: 0.4;
 }
 
@@ -461,7 +564,7 @@ onMounted( async () => await fetchData() )
 }
 
 .text-light-muted {
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 40px;
   font-size: 1.1rem;
   line-height: 1.6;
@@ -475,7 +578,7 @@ onMounted( async () => await fetchData() )
 }
 
 .waitlist-count {
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 0.9rem;
 }
 
@@ -487,11 +590,12 @@ onMounted( async () => await fetchData() )
   .hero-title {
     font-size: 2.5rem;
   }
-  
-  .story-grid, .collections-grid {
+
+  .story-grid,
+  .collections-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .membership-form {
     flex-direction: column;
   }

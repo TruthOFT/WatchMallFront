@@ -2,8 +2,8 @@
   <div class="setting-page">
     <div class="container">
       <div class="page-header">
-        <h1>账号设置</h1>
-        <p>管理您的账号安全与个性化偏好。</p>
+        <h1>账户设置</h1>
+        <p>管理您的账号安全、配送地址与通知偏好。</p>
       </div>
 
       <div class="settings-layout liquid-glass">
@@ -14,20 +14,20 @@
             </template>
             <div class="tab-content">
               <h3>账号安全</h3>
-              <p class="tab-desc">管理您的密码与安全设置以保护账号。</p>
-              
+              <p class="tab-desc">管理您的密码和安全设置，保护账号资产。</p>
+
               <div class="setting-item">
                 <div class="item-info">
                   <h4>登录密码</h4>
-                  <p>建议定期更新密码以维护账号安全。</p>
+                  <p>建议定期更新密码，避免长期使用同一组凭证。</p>
                 </div>
-                <a-button @click="message.info('功能即将上线')">修改密码</a-button>
+                <a-button @click="message.info('修改密码功能即将上线')">修改密码</a-button>
               </div>
 
               <div class="setting-item">
                 <div class="item-info">
                   <h4>双重身份验证</h4>
-                  <p>为您的账号添加额外一层安全保护。</p>
+                  <p>为账号增加额外验证步骤，提升访问安全性。</p>
                 </div>
                 <a-switch />
               </div>
@@ -35,9 +35,9 @@
               <div class="setting-item">
                 <div class="item-info">
                   <h4>最近登录活动</h4>
-                  <p>监控您账号的登录时间与地点。</p>
+                  <p>查看近期登录记录、设备和访问地点。</p>
                 </div>
-                <a-button type="link">查看记录</a-button>
+                <a-button type="link" @click="message.info('登录记录功能即将上线')">查看记录</a-button>
               </div>
             </div>
           </a-tab-pane>
@@ -48,28 +48,55 @@
             </template>
             <div class="tab-content">
               <div class="header-with-action">
-                <h3>收货地址</h3>
-                <a-button type="primary" @click="message.info('添加地址功能即将上线')">
-                  新增地址
-                </a-button>
+                <div>
+                  <h3>收货地址</h3>
+                  <p class="tab-desc">管理您的配送地址，结算时可快速选择。</p>
+                </div>
+                <a-button type="primary" @click="openCreateModal">新增地址</a-button>
               </div>
-              <p class="tab-desc">管理您的配送地址，以便快速完成结算。</p>
 
-              <div class="address-list">
-                <div v-for="addr in addresses" :key="addr.id" class="address-card">
-                  <div class="addr-header">
-                    <span class="addr-tag" v-if="addr.isDefault">默认地址</span>
-                    <div class="addr-actions">
-                      <a-button type="link" size="small">编辑</a-button>
-                      <a-button type="link" size="small" danger>删除</a-button>
+              <a-skeleton :loading="loading" active :paragraph="{ rows: 4 }">
+                <a-empty v-if="addresses.length === 0" description="暂无收货地址">
+                  <a-button type="primary" @click="openCreateModal">立即添加</a-button>
+                </a-empty>
+
+                <div v-else class="address-list">
+                  <div v-for="addr in addresses" :key="addr.id" class="address-card">
+                    <div class="addr-header">
+                      <a-tag v-if="addr.isDefault === 1" color="gold" class="addr-tag">默认地址</a-tag>
+                      <span v-else class="addr-tag-placeholder"></span>
+                      <div class="addr-actions">
+                        <a-button
+                          type="link"
+                          size="small"
+                          :disabled="addr.isDefault === 1"
+                          @click="handleSetDefault(addr)"
+                        >
+                          设为默认
+                        </a-button>
+                        <a-button type="link" size="small" @click="openEditModal(addr)">编辑</a-button>
+                        <a-popconfirm
+                          title="确认删除这个地址吗？"
+                          ok-text="删除"
+                          cancel-text="取消"
+                          @confirm="handleDelete(addr)"
+                        >
+                          <a-button type="link" size="small" danger>删除</a-button>
+                        </a-popconfirm>
+                      </div>
+                    </div>
+
+                    <div class="addr-body">
+                      <p class="addr-name">
+                        {{ addr.receiverName }}
+                        <span class="addr-phone">{{ addr.receiverPhone }}</span>
+                      </p>
+                      <p class="addr-detail">{{ formatAddress(addr) }}</p>
+                      <p v-if="addr.postalCode" class="addr-meta">邮编：{{ addr.postalCode }}</p>
                     </div>
                   </div>
-                  <div class="addr-body">
-                    <p class="addr-name">{{ addr.name }} <span class="addr-phone">{{ addr.phone }}</span></p>
-                    <p class="addr-detail">{{ addr.detail }}</p>
-                  </div>
                 </div>
-              </div>
+              </a-skeleton>
             </div>
           </a-tab-pane>
 
@@ -81,15 +108,15 @@
               <h3>通知偏好</h3>
               <div class="setting-item">
                 <div class="item-info">
-                  <h4>独家优惠</h4>
-                  <p>通过邮件接收新品上市及私人特卖信息。</p>
+                  <h4>新品和专属活动</h4>
+                  <p>通过邮件接收新品发售和专属活动提醒。</p>
                 </div>
                 <a-switch checked />
               </div>
               <div class="setting-item">
                 <div class="item-info">
                   <h4>订单动态</h4>
-                  <p>接收关于订单状态及配送信息的通知。</p>
+                  <p>接收订单状态、发货和配送进度通知。</p>
                 </div>
                 <a-switch checked />
               </div>
@@ -98,36 +125,260 @@
         </a-tabs>
       </div>
     </div>
+
+    <a-modal
+      v-model:open="modalVisible"
+      :title="editingId ? '编辑地址' : '新增地址'"
+      :confirm-loading="submitting"
+      ok-text="保存"
+      cancel-text="取消"
+      @ok="handleSubmit"
+    >
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        layout="vertical"
+      >
+        <a-form-item label="收货人" name="receiverName">
+          <a-input v-model:value="formState.receiverName" :maxlength="64" placeholder="请输入收货人姓名" />
+        </a-form-item>
+
+        <a-form-item label="手机号" name="receiverPhone">
+          <a-input v-model:value="formState.receiverPhone" :maxlength="32" placeholder="请输入收货手机号" />
+        </a-form-item>
+
+        <div class="region-grid">
+          <a-form-item label="省" name="province">
+            <a-input v-model:value="formState.province" :maxlength="64" placeholder="省份" />
+          </a-form-item>
+          <a-form-item label="市" name="city">
+            <a-input v-model:value="formState.city" :maxlength="64" placeholder="城市" />
+          </a-form-item>
+          <a-form-item label="区" name="district">
+            <a-input v-model:value="formState.district" :maxlength="64" placeholder="区县" />
+          </a-form-item>
+        </div>
+
+        <a-form-item label="详细地址" name="detailAddress">
+          <a-textarea
+            v-model:value="formState.detailAddress"
+            :auto-size="{ minRows: 3, maxRows: 5 }"
+            :maxlength="255"
+            placeholder="请输入详细地址"
+          />
+        </a-form-item>
+
+        <a-form-item label="邮编" name="postalCode">
+          <a-input v-model:value="formState.postalCode" :maxlength="20" placeholder="选填" />
+        </a-form-item>
+
+        <div class="default-switch">
+          <span>设为默认地址</span>
+          <a-switch
+            :checked="formState.isDefault === 1"
+            @change="handleDefaultChange"
+          />
+        </div>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { 
-  LockOutlined, 
-  EnvironmentOutlined, 
-  BellOutlined 
-} from '@ant-design/icons-vue';
+import { onMounted, reactive, ref } from 'vue';
+import type { FormInstance } from 'ant-design-vue';
+import { BellOutlined, EnvironmentOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
+import {
+  addAddress,
+  deleteAddress,
+  getMyAddressDetail,
+  listMyAddress,
+  setDefaultAddress,
+  updateAddress,
+} from '@/api/addressController';
 
-const activeTab = ref('security');
+type AddressFormState = {
+  receiverName: string;
+  receiverPhone: string;
+  province: string;
+  city: string;
+  district: string;
+  detailAddress: string;
+  postalCode: string;
+  isDefault: number;
+};
 
-const addresses = ref([
-  {
-    id: 1,
-    name: '张先生',
-    phone: '+86 138 0000 0000',
-    detail: '北京市朝阳区建国门外大街1号 某某大厦 1201室',
-    isDefault: true
-  },
-  {
-    id: 2,
-    name: '张先生',
-    phone: '+86 138 0000 0000',
-    detail: '上海市浦东新区陆家嘴环路1000号 某某金融中心 45楼',
-    isDefault: false
+const activeTab = ref('address');
+const loading = ref(false);
+const submitting = ref(false);
+const modalVisible = ref(false);
+const editingId = ref<string>();
+const addresses = ref<API.UserAddressVO[]>([]);
+const formRef = ref<FormInstance>();
+
+const createInitialFormState = (): AddressFormState => ({
+  receiverName: '',
+  receiverPhone: '',
+  province: '',
+  city: '',
+  district: '',
+  detailAddress: '',
+  postalCode: '',
+  isDefault: 0,
+});
+
+const formState = reactive<AddressFormState>(createInitialFormState());
+
+const rules: any = {
+  receiverName: [{ required: true, message: '请输入收货人姓名', trigger: 'blur' }],
+  receiverPhone: [
+    { required: true, message: '请输入收货手机号', trigger: 'blur' },
+    { min: 6, max: 32, message: '手机号长度需为 6-32 位', trigger: 'blur' },
+  ],
+  province: [{ required: true, message: '请输入省份', trigger: 'blur' }],
+  city: [{ required: true, message: '请输入城市', trigger: 'blur' }],
+  district: [{ required: true, message: '请输入区县', trigger: 'blur' }],
+  detailAddress: [{ required: true, message: '请输入详细地址', trigger: 'blur' }],
+};
+
+const resetForm = () => {
+  Object.assign(formState, createInitialFormState());
+  editingId.value = undefined;
+  formRef.value?.clearValidate();
+};
+
+const formatAddress = (addr: API.UserAddressVO) => {
+  return [addr.province, addr.city, addr.district, addr.detailAddress].filter(Boolean).join(' ');
+};
+
+const loadAddresses = async () => {
+  loading.value = true;
+  try {
+    const res = await listMyAddress();
+    if (res.code === 0) {
+      addresses.value = res.data ?? [];
+      return;
+    }
+    message.error(res.message || '地址列表加载失败');
+  } catch (error) {
+    console.error('Load addresses error:', error);
+    message.error('地址列表加载失败');
+  } finally {
+    loading.value = false;
   }
-]);
+};
+
+const openCreateModal = () => {
+  resetForm();
+  modalVisible.value = true;
+};
+
+const openEditModal = async (addr: API.UserAddressVO) => {
+  if (!addr.id) {
+    message.error('地址数据缺少 id');
+    return;
+  }
+  submitting.value = true;
+  try {
+    const res = await getMyAddressDetail({ id: addr.id });
+    if (res.code !== 0 || !res.data) {
+      message.error(res.message || '地址详情加载失败');
+      return;
+    }
+    editingId.value = res.data.id;
+    Object.assign(formState, {
+      receiverName: res.data.receiverName ?? '',
+      receiverPhone: res.data.receiverPhone ?? '',
+      province: res.data.province ?? '',
+      city: res.data.city ?? '',
+      district: res.data.district ?? '',
+      detailAddress: res.data.detailAddress ?? '',
+      postalCode: res.data.postalCode ?? '',
+      isDefault: res.data.isDefault ?? 0,
+    });
+    modalVisible.value = true;
+  } catch (error) {
+    console.error('Load address detail error:', error);
+    message.error('地址详情加载失败');
+  } finally {
+    submitting.value = false;
+  }
+};
+
+const handleSubmit = async () => {
+  await formRef.value?.validate();
+  submitting.value = true;
+  try {
+    const payload = {
+      ...formState,
+      postalCode: formState.postalCode.trim(),
+    };
+    const res = editingId.value
+      ? await updateAddress({ id: editingId.value, ...payload })
+      : await addAddress(payload);
+    if (res.code !== 0 || !res.data) {
+      message.error(res.message || '地址保存失败');
+      return;
+    }
+    message.success(editingId.value ? '地址已更新' : '地址已添加');
+    modalVisible.value = false;
+    resetForm();
+    await loadAddresses();
+  } catch (error) {
+    console.error('Submit address error:', error);
+    message.error('地址保存失败');
+  } finally {
+    submitting.value = false;
+  }
+};
+
+const handleDelete = async (addr: API.UserAddressVO) => {
+  if (!addr.id) {
+    message.error('地址数据缺少 id');
+    return;
+  }
+  try {
+    const res = await deleteAddress({ id: addr.id });
+    if (res.code !== 0 || !res.data) {
+      message.error(res.message || '地址删除失败');
+      return;
+    }
+    message.success('地址已删除');
+    await loadAddresses();
+  } catch (error) {
+    console.error('Delete address error:', error);
+    message.error('地址删除失败');
+  }
+};
+
+const handleSetDefault = async (addr: API.UserAddressVO) => {
+  if (!addr.id) {
+    message.error('地址数据缺少 id');
+    return;
+  }
+  try {
+    const res = await setDefaultAddress({ id: addr.id });
+    if (res.code !== 0 || !res.data) {
+      message.error(res.message || '默认地址设置失败');
+      return;
+    }
+    message.success('已设为默认地址');
+    await loadAddresses();
+  } catch (error) {
+    console.error('Set default address error:', error);
+    message.error('默认地址设置失败');
+  }
+};
+
+const handleDefaultChange = (checked: string | number | boolean) => {
+  formState.isDefault = checked ? 1 : 0;
+};
+
+onMounted(() => {
+  loadAddresses();
+});
 </script>
 
 <style scoped>
@@ -171,7 +422,7 @@ const addresses = ref([
 :deep(.ant-tabs-nav) {
   width: 250px;
   padding: 32px 0;
-  border-right: 1px solid rgba(0,0,0,0.05);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 :deep(.ant-tabs-tab) {
@@ -208,7 +459,7 @@ const addresses = ref([
   justify-content: space-between;
   align-items: center;
   padding: 24px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .item-info h4 {
@@ -225,64 +476,128 @@ const addresses = ref([
 .header-with-action {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 24px;
   margin-bottom: 8px;
+}
+
+.header-with-action .tab-desc {
+  margin-bottom: 0;
 }
 
 .address-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 }
 
 .address-card {
   padding: 24px;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
   transition: all 0.3s;
 }
 
 .address-card:hover {
   border-color: var(--color-cta);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
 }
 
 .addr-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
 .addr-tag {
-  background: var(--color-primary);
-  color: #fff;
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  margin: 0;
+}
+
+.addr-tag-placeholder {
+  display: inline-block;
+  min-height: 22px;
+}
+
+.addr-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .addr-name {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.08rem;
   margin-bottom: 8px;
 }
 
 .addr-phone {
   font-weight: 400;
   color: var(--color-text-muted);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   margin-left: 8px;
 }
 
 .addr-detail {
+  margin: 0;
   color: var(--color-secondary);
-  line-height: 1.6;
+  line-height: 1.75;
+}
+
+.addr-meta {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.default-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
 }
 
 @media (max-width: 900px) {
   :deep(.ant-tabs-nav) {
     width: 100%;
+  }
+
+  .header-with-action {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .address-list {
+    grid-template-columns: 1fr;
+  }
+
+  .region-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .tab-content {
+    padding: 28px 20px;
+  }
+
+  .addr-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .addr-actions {
+    flex-wrap: wrap;
   }
 }
 </style>
