@@ -1,28 +1,27 @@
 <template>
   <div class="layout-container">
-    <header :class="['header', { 'scrolled': isScrolled, 'search-active': isSearchOpen }]">
+    <header :class="['header', { scrolled: isScrolled, 'search-active': isSearchOpen }]">
       <div class="header-content">
         <div class="logo">
           <router-link to="/">
-            PRECISION PATH | 精准之路
+            PRECISION PATH | WATCH MALL
           </router-link>
         </div>
-        
+
         <nav :class="['nav-menu', { 'nav-hidden': isSearchOpen }]">
-          <router-link to="/" class="nav-item">名表系列</router-link>
-          <router-link to="/about" class="nav-item">品牌故事</router-link>
-          <router-link to="/support" class="nav-item">客户服务</router-link>
+          <router-link to="/" class="nav-item">collections</router-link>
+          <router-link to="/about" class="nav-item">brand story</router-link>
+          <router-link to="/support" class="nav-item">support</router-link>
         </nav>
 
         <div class="header-actions">
-          <!-- 搜索区域 -->
-          <div :class="['search-wrapper', { 'active': isSearchOpen }]">
+          <div :class="['search-wrapper', { active: isSearchOpen }]">
             <div class="search-input-container">
-              <input 
+              <input
                 ref="searchInput"
-                type="text" 
-                placeholder="搜索时计、系列或灵感..." 
                 v-model="searchQuery"
+                type="text"
+                placeholder="Search watches, series, or ideas..."
                 @keyup.enter="handleSearch"
                 @blur="closeSearchIfEmpty"
               />
@@ -49,10 +48,10 @@
                 <a-menu class="luxury-menu">
                   <template v-for="item in menuItems" :key="item.key">
                     <a-menu-divider v-if="item.type === 'divider'" />
-                    <a-menu-item 
-                      v-else 
-                      :key="item.key" 
-                      @click="item.action" 
+                    <a-menu-item
+                      v-else
+                      :key="item.key"
+                      @click="item.action"
                       :danger="item.danger"
                     >
                       <template #icon>
@@ -68,7 +67,7 @@
 
           <router-link v-else to="/user/login" :class="{ 'hidden-mobile': isSearchOpen }">
             <a-button type="primary" class="login-btn">
-              会员登录
+              Sign In
             </a-button>
           </router-link>
         </div>
@@ -87,45 +86,46 @@
       <div class="footer-content">
         <div class="footer-brand">
           <h3>PRECISION PATH</h3>
-          <p>为现代鉴赏家重新定义时光。</p>
+          <p>Modern watch design shaped for everyday collectors.</p>
         </div>
         <div class="footer-links">
           <div class="link-group">
-            <h4>购物</h4>
-            <a href="#">新品上市</a>
-            <a href="#">畅销经典</a>
-            <a href="#">限量珍藏</a>
+            <h4>shop</h4>
+            <a href="#">new arrivals</a>
+            <a href="#">best sellers</a>
+            <a href="#">limited editions</a>
           </div>
           <div class="link-group">
-            <h4>品牌</h4>
-            <router-link to="/about">关于我们</router-link>
-            <a href="#">加入我们</a>
-            <a href="#">媒体中心</a>
+            <h4>brand</h4>
+            <router-link to="/about">about us</router-link>
+            <a href="#">careers</a>
+            <a href="#">press</a>
           </div>
           <div class="link-group">
-            <h4>支持</h4>
-            <router-link to="/support">联系我们</router-link>
-            <a href="#">配送与退换货</a>
-            <router-link to="/faq">常见问题</router-link>
+            <h4>help</h4>
+            <router-link to="/support">contact us</router-link>
+            <a href="#">shipping & returns</a>
+            <router-link to="/faq">faq</router-link>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 PRECISION PATH 精准之路. 版权所有.</p>
+        <p>&copy; 2026 PRECISION PATH. All rights reserved.</p>
       </div>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, markRaw, nextTick } from 'vue';
-import { 
-  ShoppingOutlined, 
-  UserOutlined, 
-  LogoutOutlined, 
+import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+import {
+  ShoppingOutlined,
+  UserOutlined,
+  LogoutOutlined,
   SettingOutlined,
+  HeartOutlined,
   SearchOutlined,
-  CloseOutlined
+  CloseOutlined,
 } from '@ant-design/icons-vue';
 import { useUserStore } from '@/config/stores';
 import { useRouter } from 'vue-router';
@@ -134,8 +134,6 @@ import { message } from 'ant-design-vue';
 const userStore = useUserStore();
 const router = useRouter();
 const isScrolled = ref(false);
-
-// 搜索相关状态
 const isSearchOpen = ref(false);
 const searchQuery = ref('');
 const searchInput = ref<HTMLInputElement | null>(null);
@@ -162,54 +160,67 @@ const closeSearchIfEmpty = () => {
 };
 
 const handleSearch = () => {
-  if (searchQuery.value.trim()) {
-    message.success(`正在为您搜索: ${searchQuery.value}`);
-    // 实际项目中这里可以跳转到搜索结果页
-    isSearchOpen.value = false;
-    searchQuery.value = '';
+  const keyword = searchQuery.value.trim();
+  if (!keyword) {
+    return;
   }
+  void router.push({
+    path: '/search',
+    query: {
+      keyword,
+      page: '1',
+    },
+  });
+  isSearchOpen.value = false;
+  searchQuery.value = '';
 };
 
 const handleLogout = async () => {
   try {
     await userStore.logout();
-    message.success('已成功退出登录');
+    message.success('Signed out');
     router.push('/');
   } catch (error) {
-    message.error('退出失败');
+    message.error('Sign out failed');
   }
 };
 
 const menuItems = [
   {
     key: 'profile',
-    label: '个人信息',
+    label: 'Profile',
     icon: UserOutlined,
-    action: () => router.push('/user/profile')
+    action: () => router.push('/user/profile'),
   },
   {
     key: 'orders',
-    label: '我的订单',
+    label: 'Orders',
     icon: ShoppingOutlined,
-    action: () => router.push('/user/orders')
+    action: () => router.push('/user/orders'),
+  },
+  {
+    key: 'favorites',
+    label: 'Favorites',
+    icon: HeartOutlined,
+    action: () => router.push('/user/favorites'),
   },
   {
     key: 'settings',
-    label: '账号设置',
+    label: 'Settings',
     icon: SettingOutlined,
-    action: () => router.push('/settings')
+    action: () => router.push('/user/settings'),
   },
   {
     key: 'divider-1',
-    type: 'divider'
+    type: 'divider',
   },
   {
     key: 'logout',
-    label: '退出登录',
+    label: 'Sign Out',
     icon: LogoutOutlined,
     danger: true,
-    action: handleLogout
-  }
+    action: handleLogout,
+  },
 ];
 
 onMounted(() => {
@@ -242,7 +253,7 @@ onUnmounted(() => {
   background: rgba(250, 250, 249, 0.85);
   backdrop-filter: blur(12px);
   padding: 16px 0;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 .header-content {
@@ -327,7 +338,6 @@ onUnmounted(() => {
   transform: translateY(-2px);
 }
 
-/* 搜索增强样式 */
 .search-wrapper {
   display: flex;
   align-items: center;
@@ -361,7 +371,7 @@ onUnmounted(() => {
 }
 
 .search-input-container input::placeholder {
-  color: rgba(0,0,0,0.3);
+  color: rgba(0, 0, 0, 0.3);
   font-weight: 300;
 }
 
@@ -376,7 +386,7 @@ onUnmounted(() => {
 }
 
 .user-info-trigger:hover {
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .username {
@@ -388,8 +398,8 @@ onUnmounted(() => {
 
 .luxury-menu {
   min-width: 180px;
-  border: 1px solid rgba(0,0,0,0.05);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .footer {
@@ -473,11 +483,11 @@ onUnmounted(() => {
   letter-spacing: 1px;
 }
 
-/* 响应式处理 */
 @media (max-width: 1024px) {
   .footer-content {
     gap: 60px;
   }
+
   .footer-links {
     gap: 40px;
   }
@@ -487,30 +497,33 @@ onUnmounted(() => {
   .footer {
     padding: 60px 0 32px;
   }
+
   .footer-content {
     flex-direction: column;
     gap: 60px;
     text-align: center;
   }
+
   .footer-brand p {
     max-width: 100%;
   }
+
   .footer-links {
     flex-direction: column;
     align-items: center;
     gap: 48px;
   }
+
   .link-group h4 {
     margin-bottom: 24px;
   }
 }
 
-/* 响应式处理 */
 @media (max-width: 1024px) {
   .nav-menu {
     gap: 24px;
   }
-  
+
   .search-wrapper.active .search-input-container {
     width: 200px;
   }
@@ -518,13 +531,13 @@ onUnmounted(() => {
 
 @media (max-width: 768px) {
   .nav-menu {
-    display: none; /* 移动端通常收纳进汉堡菜单，此处先隐藏以防重叠 */
+    display: none;
   }
-  
+
   .hidden-mobile {
     display: v-bind(isSearchOpen ? 'none' : 'flex');
   }
-  
+
   .search-wrapper.active {
     position: absolute;
     right: 40px;
@@ -535,7 +548,6 @@ onUnmounted(() => {
   }
 }
 
-/* Page Transitions */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease;
