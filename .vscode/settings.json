@@ -1,5 +1,7 @@
 {
   "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font",
-  "terminal.integrated.fontSize": 14
-  
+  "terminal.integrated.fontSize": 14,
+  "workbench.colorCustomizations": {
+    "editorCursor.foreground": "#FFC0CB",
+  }
 }
