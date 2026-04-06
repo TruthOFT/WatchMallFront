@@ -18,8 +18,11 @@ const doInit = async () => {
     const res = await getLoginUser();
     if (res.code === 0 && res.data) {
       userStore.setLoginUser(res.data);
+      return;
     }
+    userStore.clearLoginUser();
   } catch (e) {
+    userStore.clearLoginUser();
     console.log("Backend not available or error:", e);
   }
 };
