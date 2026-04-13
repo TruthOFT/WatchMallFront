@@ -78,6 +78,7 @@ import {
   ProfileOutlined,
   ShoppingOutlined,
   TeamOutlined,
+  MessageOutlined,
   UserOutlined,
 } from "@ant-design/icons-vue";
 import { useAlertsStore } from "@/config/store";
@@ -92,6 +93,7 @@ const menuItems = [
   { key: "/user/list", path: "/user/list", label: "用户管理", icon: TeamOutlined },
   { key: "/pay/list", path: "/pay/list", label: "支付记录", icon: PayCircleOutlined },
   { key: "/order/list", path: "/order/list", label: "订单管理", icon: ProfileOutlined },
+  { key: "/support/list", path: "/support/list", label: "客户支持", icon: MessageOutlined },
   { key: "/product/list", path: "/product/list", label: "商品列表", icon: ShoppingOutlined },
   { key: "/product/new", path: "/product/new", label: "新增商品", icon: BarsOutlined },
   { key: "/category", path: "/category", label: "分类管理", icon: AppstoreOutlined },

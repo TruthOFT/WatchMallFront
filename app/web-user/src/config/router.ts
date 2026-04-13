@@ -10,6 +10,7 @@ import ProfilePage from "@/pages/ProfilePage.vue";
 import OrderPage from "@/pages/OrderPage.vue";
 import FavoritePage from "@/pages/FavoritePage.vue";
 import SettingPage from "@/pages/SettingPage.vue";
+import ChangePasswordPage from "@/pages/ChangePasswordPage.vue";
 import IndexPage from '@/pages/IndexPage.vue';
 import ProductDetailPage from '@/pages/ProductDetailPage.vue';
 import CategoryProductListPage from '@/pages/CategoryProductListPage.vue';
@@ -92,6 +93,10 @@ const routes = [
             {
                 path: "settings",
                 component: SettingPage,
+            },
+            {
+                path: "change-password",
+                component: ChangePasswordPage,
             }
         ]
     },

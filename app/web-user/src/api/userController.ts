@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from "@/request";
 
-/** 此处后端没有提供注释 POST /user/add */
+/** 姿态保留：后端未提供注释 POST /user/add */
 export async function addUser(
   body: API.UserAddRequest,
   options?: { [key: string]: any }
@@ -17,7 +17,7 @@ export async function addUser(
   });
 }
 
-/** 此处后端没有提供注释 POST /user/avatar */
+/** 姿态保留：后端未提供注释 POST /user/avatar */
 export async function uploadAvatar(body: {}, options?: { [key: string]: any }) {
   return request<API.BaseResponseString>("/user/avatar", {
     method: "POST",
@@ -29,7 +29,7 @@ export async function uploadAvatar(body: {}, options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /user/delete */
+/** 姿态保留：后端未提供注释 POST /user/delete */
 export async function deleteUser(
   body: API.DeleteRequest,
   options?: { [key: string]: any }
@@ -44,9 +44,8 @@ export async function deleteUser(
   });
 }
 
-/** 此处后端没有提供注释 GET /user/get */
+/** 姿态保留：后端未提供注释 GET /user/get */
 export async function getUserById(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserByIdParams,
   options?: { [key: string]: any }
 ) {
@@ -59,7 +58,7 @@ export async function getUserById(
   });
 }
 
-/** 此处后端没有提供注释 GET /user/get/login */
+/** 姿态保留：后端未提供注释 GET /user/get/login */
 export async function getLoginUser(options?: { [key: string]: any }) {
   return request<API.BaseResponseLoginUserVO>("/user/get/login", {
     method: "GET",
@@ -67,9 +66,8 @@ export async function getLoginUser(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 GET /user/get/vo */
+/** 姿态保留：后端未提供注释 GET /user/get/vo */
 export async function getUserVoById(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getUserVOByIdParams,
   options?: { [key: string]: any }
 ) {
@@ -82,7 +80,7 @@ export async function getUserVoById(
   });
 }
 
-/** 此处后端没有提供注释 POST /user/login */
+/** 姿态保留：后端未提供注释 POST /user/login */
 export async function userLogin(
   body: API.UserLoginRequest,
   options?: { [key: string]: any }
@@ -97,7 +95,22 @@ export async function userLogin(
   });
 }
 
-/** 此处后端没有提供注释 POST /user/logout */
+/** 姿态保留：后端未提供注释 POST /user/password/update */
+export async function updateUserPassword(
+  body: API.UserUpdatePasswordRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean>("/user/password/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 姿态保留：后端未提供注释 POST /user/logout */
 export async function userLogout(options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean>("/user/logout", {
     method: "POST",
@@ -105,7 +118,7 @@ export async function userLogout(options?: { [key: string]: any }) {
   });
 }
 
-/** 此处后端没有提供注释 POST /user/register */
+/** 姿态保留：后端未提供注释 POST /user/register */
 export async function userRegister(
   body: API.UserRegisterRequest,
   options?: { [key: string]: any }
@@ -120,7 +133,7 @@ export async function userRegister(
   });
 }
 
-/** 此处后端没有提供注释 POST /user/update */
+/** 姿态保留：后端未提供注释 POST /user/update */
 export async function updateUser(
   body: API.UserUpdateRequest,
   options?: { [key: string]: any }
@@ -135,7 +148,7 @@ export async function updateUser(
   });
 }
 
-/** 此处后端没有提供注释 POST /user/update/my */
+/** 姿态保留：后端未提供注释 POST /user/update/my */
 export async function updateMyUser(
   body: API.UserUpdateMyRequest,
   options?: { [key: string]: any }

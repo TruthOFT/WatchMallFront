@@ -3,7 +3,7 @@
     <div class="container">
       <div class="page-header">
         <h1>账户设置</h1>
-        <p>管理您的账号安全、配送地址与通知偏好。</p>
+        <p>管理您的账号安全与收货地址。</p>
       </div>
 
       <div class="settings-layout liquid-glass">
@@ -14,30 +14,14 @@
             </template>
             <div class="tab-content">
               <h3>账号安全</h3>
-              <p class="tab-desc">管理您的密码和安全设置，保护账号资产。</p>
+              <p class="tab-desc">定期更新密码，保护您的账户安全。</p>
 
               <div class="setting-item">
                 <div class="item-info">
-                  <h4>登录密码</h4>
-                  <p>建议定期更新密码，避免长期使用同一组凭证。</p>
+                  <h4>修改密码</h4>
+                  <p>验证当前密码后设置新密码，修改成功后需要重新登录。</p>
                 </div>
-                <a-button @click="message.info('修改密码功能即将上线')">修改密码</a-button>
-              </div>
-
-              <div class="setting-item">
-                <div class="item-info">
-                  <h4>双重身份验证</h4>
-                  <p>为账号增加额外验证步骤，提升访问安全性。</p>
-                </div>
-                <a-switch />
-              </div>
-
-              <div class="setting-item">
-                <div class="item-info">
-                  <h4>最近登录活动</h4>
-                  <p>查看近期登录记录、设备和访问地点。</p>
-                </div>
-                <a-button type="link" @click="message.info('登录记录功能即将上线')">查看记录</a-button>
+                <a-button type="primary" @click="goToChangePassword">去修改</a-button>
               </div>
             </div>
           </a-tab-pane>
@@ -99,29 +83,6 @@
               </a-skeleton>
             </div>
           </a-tab-pane>
-
-          <a-tab-pane key="notification">
-            <template #tab>
-              <span><bell-outlined /> 通知设置</span>
-            </template>
-            <div class="tab-content">
-              <h3>通知偏好</h3>
-              <div class="setting-item">
-                <div class="item-info">
-                  <h4>新品和专属活动</h4>
-                  <p>通过邮件接收新品发售和专属活动提醒。</p>
-                </div>
-                <a-switch checked />
-              </div>
-              <div class="setting-item">
-                <div class="item-info">
-                  <h4>订单动态</h4>
-                  <p>接收订单状态、发货和配送进度通知。</p>
-                </div>
-                <a-switch checked />
-              </div>
-            </div>
-          </a-tab-pane>
         </a-tabs>
       </div>
     </div>
@@ -145,7 +106,7 @@
         </a-form-item>
 
         <a-form-item label="手机号" name="receiverPhone">
-          <a-input v-model:value="formState.receiverPhone" :maxlength="32" placeholder="请输入收货手机号" />
+          <a-input v-model:value="formState.receiverPhone" :maxlength="32" placeholder="请输入收货人手机号" />
         </a-form-item>
 
         <div class="region-grid">
@@ -187,8 +148,9 @@
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import type { FormInstance } from 'ant-design-vue';
-import { BellOutlined, EnvironmentOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { EnvironmentOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import {
   addAddress,
@@ -210,7 +172,8 @@ type AddressFormState = {
   isDefault: number;
 };
 
-const activeTab = ref('address');
+const router = useRouter();
+const activeTab = ref('security');
 const loading = ref(false);
 const submitting = ref(false);
 const modalVisible = ref(false);
@@ -231,16 +194,20 @@ const createInitialFormState = (): AddressFormState => ({
 
 const formState = reactive<AddressFormState>(createInitialFormState());
 
-const rules: any = {
+const rules: Record<string, Array<Record<string, unknown>>> = {
   receiverName: [{ required: true, message: '请输入收货人姓名', trigger: 'blur' }],
   receiverPhone: [
-    { required: true, message: '请输入收货手机号', trigger: 'blur' },
-    { min: 6, max: 32, message: '手机号长度需为 6-32 位', trigger: 'blur' },
+    { required: true, message: '请输入收货人手机号', trigger: 'blur' },
+    { min: 6, max: 32, message: '手机号长度需在 6 到 32 位之间', trigger: 'blur' },
   ],
   province: [{ required: true, message: '请输入省份', trigger: 'blur' }],
   city: [{ required: true, message: '请输入城市', trigger: 'blur' }],
   district: [{ required: true, message: '请输入区县', trigger: 'blur' }],
   detailAddress: [{ required: true, message: '请输入详细地址', trigger: 'blur' }],
+};
+
+const goToChangePassword = () => {
+  void router.push('/user/change-password');
 };
 
 const resetForm = () => {
@@ -322,7 +289,7 @@ const handleSubmit = async () => {
       message.error(res.message || '地址保存失败');
       return;
     }
-    message.success(editingId.value ? '地址已更新' : '地址已添加');
+    message.success(editingId.value ? '地址已更新' : '地址已新增');
     modalVisible.value = false;
     resetForm();
     await loadAddresses();
@@ -377,7 +344,7 @@ const handleDefaultChange = (checked: string | number | boolean) => {
 };
 
 onMounted(() => {
-  loadAddresses();
+  void loadAddresses();
 });
 </script>
 
@@ -458,6 +425,7 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 24px;
   padding: 24px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -589,6 +557,11 @@ onMounted(() => {
 @media (max-width: 640px) {
   .tab-content {
     padding: 28px 20px;
+  }
+
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .addr-header {

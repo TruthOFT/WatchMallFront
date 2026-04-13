@@ -9,9 +9,9 @@
         </div>
 
         <nav :class="['nav-menu', { 'nav-hidden': isSearchOpen }]">
-          <router-link to="/" class="nav-item">collections</router-link>
-          <router-link to="/about" class="nav-item">brand story</router-link>
-          <router-link to="/support" class="nav-item">support</router-link>
+          <router-link to="/" class="nav-item">精选腕表</router-link>
+          <router-link to="/about" class="nav-item">品牌故事</router-link>
+          <router-link to="/support" class="nav-item">客户支持</router-link>
         </nav>
 
         <div class="header-actions">
@@ -21,7 +21,7 @@
                 ref="searchInput"
                 v-model="searchQuery"
                 type="text"
-                placeholder="Search watches, series, or ideas..."
+                placeholder="搜索腕表、系列或灵感"
                 @keyup.enter="handleSearch"
                 @blur="closeSearchIfEmpty"
               />
@@ -67,7 +67,7 @@
 
           <router-link v-else to="/user/login" :class="{ 'hidden-mobile': isSearchOpen }">
             <a-button type="primary" class="login-btn">
-              Sign In
+              登录
             </a-button>
           </router-link>
         </div>
@@ -85,32 +85,32 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-brand">
-          <h3>PRECISION PATH</h3>
-          <p>Modern watch design shaped for everyday collectors.</p>
+          <h3>精准轨迹</h3>
+          <p>为日常收藏者打造兼具设计感与质感的现代腕表。</p>
         </div>
         <div class="footer-links">
           <div class="link-group">
-            <h4>shop</h4>
-            <a href="#">new arrivals</a>
-            <a href="#">best sellers</a>
-            <a href="#">limited editions</a>
+            <h4>选购</h4>
+            <a href="#">新品上架</a>
+            <a href="#">热销推荐</a>
+            <a href="#">限量系列</a>
           </div>
           <div class="link-group">
-            <h4>brand</h4>
-            <router-link to="/about">about us</router-link>
-            <a href="#">careers</a>
-            <a href="#">press</a>
+            <h4>品牌</h4>
+            <router-link to="/about">关于我们</router-link>
+            <a href="#">加入我们</a>
+            <a href="#">媒体资讯</a>
           </div>
           <div class="link-group">
-            <h4>help</h4>
-            <router-link to="/support">contact us</router-link>
-            <a href="#">shipping & returns</a>
-            <router-link to="/faq">faq</router-link>
+            <h4>帮助</h4>
+            <router-link to="/support">联系我们</router-link>
+            <a href="#">配送与退换</a>
+            <router-link to="/faq">常见问题</router-link>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 PRECISION PATH. All rights reserved.</p>
+        <p>&copy; 2026 精准轨迹。保留所有权利。</p>
       </div>
     </footer>
   </div>
@@ -178,35 +178,35 @@ const handleSearch = () => {
 const handleLogout = async () => {
   try {
     await userStore.logout();
-    message.success('Signed out');
+    message.success('已退出登录');
     router.push('/');
   } catch (error) {
-    message.error('Sign out failed');
+    message.error('退出登录失败');
   }
 };
 
 const menuItems = [
   {
     key: 'profile',
-    label: 'Profile',
+    label: '个人资料',
     icon: UserOutlined,
     action: () => router.push('/user/profile'),
   },
   {
     key: 'orders',
-    label: 'Orders',
+    label: '我的订单',
     icon: ShoppingOutlined,
     action: () => router.push('/user/orders'),
   },
   {
     key: 'favorites',
-    label: 'Favorites',
+    label: '我的收藏',
     icon: HeartOutlined,
     action: () => router.push('/user/favorites'),
   },
   {
     key: 'settings',
-    label: 'Settings',
+    label: '账号设置',
     icon: SettingOutlined,
     action: () => router.push('/user/settings'),
   },
@@ -216,7 +216,7 @@ const menuItems = [
   },
   {
     key: 'logout',
-    label: 'Sign Out',
+    label: '退出登录',
     icon: LogoutOutlined,
     danger: true,
     action: handleLogout,
