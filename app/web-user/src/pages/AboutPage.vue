@@ -1,3 +1,8 @@
+<script setup>
+import item1Image from '../assets/item1.jpg'
+import item2Image from '../assets/item2.jpg'
+</script>
+
 <template>
 
     <div class="about-page">
@@ -7,36 +12,32 @@
             </div>
             <div class="hero-overlay"></div>
             <div class="hero-content">
-                <h1>Our Legacy</h1>
-                <p>A century of defining moments.</p>
+                <h1>我们的传承</h1>
+                <p>用一个世纪书写重要时刻。</p>
             </div>
         </div>
         <div class="container section">
             <div class="content-block">
-                <span class="eyebrow">THE BEGINNING</span>
-                <h2>Origins of Excellence</h2>
-                <p>Founded with a singular vision to redefine the boundaries of horology, WatchMall has spent decades
-                    curating the world's most exceptional timepieces. Our journey began in a small atelier, driven by a
-                    passion for mechanical perfection and artistic expression.</p>
+                <span class="eyebrow">起点</span>
+                <h2>卓越的源起</h2>
+                <p>怀着重新定义制表边界的坚定愿景，精准之路 用数十年时间甄选来自世界各地的非凡时计。我们的旅程始于一间小小的工坊，由对机械之美与艺术表达的热爱所驱动。</p>
             </div>
         </div>
 
         <div class="image-break">
             <div class="image-item"
-                style="background-image: url('https://images.unsplash.com/photo-1590736969955-71cc94801759?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')">
+                :style="{ backgroundImage: `url(${item1Image})` }">
             </div>
             <div class="image-item"
-                style="background-image: url('https://images.unsplash.com/photo-1587925358603-c2fea45817c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')">
+                :style="{ backgroundImage: `url(${item2Image})` }">
             </div>
         </div>
 
         <div class="container section">
             <div class="content-block right">
-                <span class="eyebrow">THE PHILOSOPHY</span>
-                <h2>Timeless Values</h2>
-                <p>We believe that a watch is more than an instrument to measure time; it is a companion for life. Every
-                    piece in our collection is selected for its ability to transcend trends and stand as a testament to
-                    enduring style and craftsmanship.</p>
+                <span class="eyebrow">理念</span>
+                <h2>恒久的价值</h2>
+                <p>我们相信，腕表不只是丈量时间的工具，更是陪伴人生的重要伙伴。系列中的每一枚作品，都因其超越潮流的气质而被选中，见证着历久弥新的风格与工艺。</p>
             </div>
         </div>
     </div>

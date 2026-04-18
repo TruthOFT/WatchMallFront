@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="logo">
           <router-link to="/">
-            PRECISION PATH | WATCH MALL
+            PRECISION PATH | 精准之路
           </router-link>
         </div>
 
