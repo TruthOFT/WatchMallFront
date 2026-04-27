@@ -91,21 +91,21 @@
         <div class="footer-links">
           <div class="link-group">
             <h4>选购</h4>
-            <a href="#">新品上架</a>
-            <a href="#">热销推荐</a>
-            <a href="#">限量系列</a>
+            <router-link to="/">精选腕表</router-link>
+            <router-link to="/user/favorites">我的收藏</router-link>
+            <router-link to="/user/cart">购物车</router-link>
           </div>
           <div class="link-group">
             <h4>品牌</h4>
             <router-link to="/about">关于我们</router-link>
-            <a href="#">加入我们</a>
-            <a href="#">媒体资讯</a>
+            <router-link to="/support">客户支持</router-link>
+            <router-link to="/faq">常见问题</router-link>
           </div>
           <div class="link-group">
-            <h4>帮助</h4>
-            <router-link to="/support">联系我们</router-link>
-            <a href="#">配送与退换</a>
-            <router-link to="/faq">常见问题</router-link>
+            <h4>账户</h4>
+            <router-link to="/user/profile">个人资料</router-link>
+            <router-link to="/user/orders">我的订单</router-link>
+            <router-link to="/user/settings">账号设置</router-link>
           </div>
         </div>
       </div>
