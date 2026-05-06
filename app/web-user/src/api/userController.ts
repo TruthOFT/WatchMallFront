@@ -18,13 +18,14 @@ export async function addUser(
 }
 
 /** 姿态保留：后端未提供注释 POST /user/avatar */
-export async function uploadAvatar(body: {}, options?: { [key: string]: any }) {
+export async function uploadAvatar(file: File, options?: { [key: string]: any }) {
+  const formData = new FormData();
+  formData.append("file", file);
+
   return request<API.BaseResponseString>("/user/avatar", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: body,
+    data: formData,
+    requestType: "form",
     ...(options || {}),
   });
 }

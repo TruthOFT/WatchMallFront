@@ -11,11 +11,25 @@
           <div class="profile-card liquid-glass">
             <div class="profile-main">
               <div class="avatar-section">
-                <a-avatar :src="userStore.loginUser.avatarUrl" :size="120">
-                  <template #icon><user-outlined /></template>
-                </a-avatar>
+                <a-upload
+                  :show-upload-list="false"
+                  accept="image/*"
+                  :before-upload="handleAvatarUpload"
+                  :disabled="avatarUploading"
+                >
+                  <a-avatar :src="avatarUrl" :size="120" class="profile-avatar">
+                    <template #icon><user-outlined /></template>
+                  </a-avatar>
+                </a-upload>
                 <div class="avatar-actions">
+                  <a-upload
+                    :show-upload-list="false"
+                    accept="image/*"
+                    :before-upload="handleAvatarUpload"
+                    :disabled="avatarUploading"
+                  >
                   <a-button type="link">更换头像</a-button>
+                  </a-upload>
                 </div>
               </div>
               
@@ -68,19 +82,99 @@
         </a-skeleton>
       </div>
     </div>
+
+    <a-modal
+      v-model:open="editModalOpen"
+      title="编辑个人资料"
+      :confirm-loading="profileSubmitting"
+      ok-text="保存"
+      cancel-text="取消"
+      @ok="handleProfileSubmit"
+    >
+      <a-form layout="vertical" class="profile-edit-form">
+        <a-form-item label="昵称">
+          <a-input v-model:value="profileForm.username" placeholder="请输入昵称" :maxlength="30" />
+        </a-form-item>
+        <a-form-item label="电子邮箱">
+          <a-input v-model:value="profileForm.email" placeholder="请输入电子邮箱" :maxlength="80" />
+        </a-form-item>
+        <a-form-item label="联系电话">
+          <a-input v-model:value="profileForm.phone" placeholder="请输入联系电话" :maxlength="20" />
+        </a-form-item>
+        <a-form-item label="性别">
+          <a-select v-model:value="profileForm.gender" placeholder="请选择性别" allow-clear>
+            <a-select-option :value="1">男</a-select-option>
+            <a-select-option :value="0">女</a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { computed, reactive, ref, onMounted } from 'vue';
 import { useUserStore } from '@/config/stores';
-import { getLoginUser } from '@/api/userController';
+import { getLoginUser, updateMyUser, uploadAvatar } from '@/api/userController';
+import { BASE_URL } from '@/request';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
+import type { UploadProps } from 'ant-design-vue';
 
 const userStore = useUserStore();
 const loading = ref(true);
+const avatarUploading = ref(false);
+const editModalOpen = ref(false);
+const profileSubmitting = ref(false);
+const profileForm = reactive({
+  username: '',
+  email: '',
+  phone: '',
+  gender: undefined as number | undefined,
+});
 
+const avatarUrl = computed(() => {
+  const url = userStore.loginUser.avatarUrl;
+  if (!url) {
+    return '';
+  }
+  if (/^(https?:)?\/\//.test(url) || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  return `${BASE_URL}${url}`;
+});
+
+const handleAvatarUpload: UploadProps['beforeUpload'] = async (file) => {
+  if (!file.type.startsWith('image/')) {
+    message.error('请上传图片文件');
+    return false;
+  }
+  if (file.size / 1024 / 1024 > 5) {
+    message.error('头像大小不能超过 5MB');
+    return false;
+  }
+
+  avatarUploading.value = true;
+  try {
+    const res = await uploadAvatar(file as File);
+    if (res.code === 0 && res.data) {
+      userStore.setLoginUser({
+        ...userStore.loginUser,
+        avatarUrl: res.data,
+      });
+      message.success('头像更新成功');
+    } else {
+      message.error(res.message || '头像上传失败');
+    }
+  } catch (error) {
+    console.error('Upload avatar error:', error);
+    message.error('头像上传失败');
+  } finally {
+    avatarUploading.value = false;
+  }
+
+  return false;
+};
 const fetchUserInfo = async () => {
   loading.value = true;
   try {
@@ -126,7 +220,55 @@ const formatCurrency = (value: number) => {
 };
 
 const handleEdit = () => {
-  message.info('资料编辑功能即将上线');
+  profileForm.username = userStore.loginUser.username || '';
+  profileForm.email = userStore.loginUser.email || '';
+  profileForm.phone = userStore.loginUser.phone || '';
+  profileForm.gender = userStore.loginUser.gender;
+  editModalOpen.value = true;
+};
+
+const handleProfileSubmit = async () => {
+  const email = profileForm.email.trim();
+  const phone = profileForm.phone.trim();
+
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    message.error('邮箱格式不正确');
+    return;
+  }
+  if (phone && !/^[0-9+\-\s]{6,20}$/.test(phone)) {
+    message.error('手机号格式不正确');
+    return;
+  }
+
+  profileSubmitting.value = true;
+  try {
+    const res = await updateMyUser({
+      username: profileForm.username.trim(),
+      email,
+      phone,
+      gender: profileForm.gender,
+    });
+
+    if (res.code === 0 && res.data) {
+      userStore.setLoginUser({
+        ...userStore.loginUser,
+        username: profileForm.username.trim(),
+        email,
+        phone,
+        gender: profileForm.gender,
+      });
+      editModalOpen.value = false;
+      message.success('个人资料更新成功');
+      await fetchUserInfo();
+    } else {
+      message.error(res.message || '个人资料更新失败');
+    }
+  } catch (error) {
+    console.error('Update profile error:', error);
+    message.error('个人资料更新失败');
+  } finally {
+    profileSubmitting.value = false;
+  }
 };
 </script>
 

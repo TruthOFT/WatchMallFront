@@ -586,10 +586,10 @@ declare namespace API {
   };
 
   type UserUpdateMyRequest = {
-    userName?: string;
-    userAvatar?: string;
-    userProfile?: string;
-    balance?: number;
+    username?: string;
+    email?: string;
+    phone?: string;
+    gender?: number;
   };
 
   type UserUpdateRequest = {

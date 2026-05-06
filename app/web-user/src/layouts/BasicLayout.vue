@@ -39,7 +39,7 @@
           <div v-if="userStore.isLogin" class="user-profile-dropdown" :class="{ 'hidden-mobile': isSearchOpen }">
             <a-dropdown placement="bottomRight">
               <div class="user-info-trigger">
-                <a-avatar :src="userStore.loginUser.avatarUrl" :size="32">
+                <a-avatar :src="avatarUrl" :size="32">
                   <template #icon><user-outlined /></template>
                 </a-avatar>
                 <span class="username">{{ userStore.loginUser.username || userStore.loginUser.userAccount }}</span>
@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+import { computed, ref, onMounted, onUnmounted, nextTick } from 'vue';
 import {
   ShoppingOutlined,
   UserOutlined,
@@ -128,6 +128,7 @@ import {
   CloseOutlined,
 } from '@ant-design/icons-vue';
 import { useUserStore } from '@/config/stores';
+import { BASE_URL } from '@/request';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 
@@ -137,6 +138,17 @@ const isScrolled = ref(false);
 const isSearchOpen = ref(false);
 const searchQuery = ref('');
 const searchInput = ref<HTMLInputElement | null>(null);
+
+const avatarUrl = computed(() => {
+  const url = userStore.loginUser.avatarUrl;
+  if (!url) {
+    return '';
+  }
+  if (/^(https?:)?\/\//.test(url) || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  return `${BASE_URL}${url}`;
+});
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
