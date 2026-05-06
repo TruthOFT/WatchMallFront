@@ -505,6 +505,7 @@ const normalizeSkus = async () => {
     }
     const image = await uploadImageIfNeeded(item.pendingImageFile, item.image);
     result.push({
+      id: item.id,
       skuCode: item.skuCode?.trim() || undefined,
       skuName: item.skuName?.trim() || undefined,
       image: image || undefined,

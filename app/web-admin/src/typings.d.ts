@@ -127,6 +127,7 @@ declare namespace API {
   };
 
   type SkuItem = {
+    id?: string;
     skuCode?: string;
     skuName?: string;
     image?: string;
