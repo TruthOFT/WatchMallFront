@@ -71,7 +71,7 @@
                   <span class="label">账户余额</span>
                   <span class="value balance">{{ formatCurrency(userStore.loginUser.balance || 0) }}</span>
                 </div>
-                <a-button type="primary" class="topup-btn">立即充值</a-button>
+                <a-button type="primary" class="topup-btn" @click="handleTopupClick">立即充值</a-button>
               </div>
             </div>
             
@@ -109,13 +109,47 @@
         </a-form-item>
       </a-form>
     </a-modal>
+
+    <a-modal
+      v-model:open="topupModalOpen"
+      title="账户充值"
+      :confirm-loading="topupSubmitting"
+      ok-text="确认充值"
+      cancel-text="取消"
+      @ok="handleTopupSubmit"
+    >
+      <a-form layout="vertical" class="topup-form">
+        <a-form-item label="充值金额">
+          <a-input-number
+            v-model:value="topupAmount"
+            class="topup-input"
+            :min="1"
+            :max="100000"
+            :precision="2"
+            :step="100"
+            addon-before="¥"
+            placeholder="请输入充值金额"
+          />
+        </a-form-item>
+        <div class="quick-amounts">
+          <a-button
+            v-for="amount in quickTopupAmounts"
+            :key="amount"
+            type="default"
+            @click="topupAmount = amount"
+          >
+            {{ formatCurrency(amount) }}
+          </a-button>
+        </div>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, reactive, ref, onMounted } from 'vue';
 import { useUserStore } from '@/config/stores';
-import { getLoginUser, updateMyUser, uploadAvatar } from '@/api/userController';
+import { getLoginUser, rechargeMyBalance, updateMyUser, uploadAvatar } from '@/api/userController';
 import { BASE_URL } from '@/request';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
@@ -126,6 +160,10 @@ const loading = ref(true);
 const avatarUploading = ref(false);
 const editModalOpen = ref(false);
 const profileSubmitting = ref(false);
+const topupModalOpen = ref(false);
+const topupSubmitting = ref(false);
+const topupAmount = ref<number | null>(500);
+const quickTopupAmounts = [100, 500, 1000, 5000];
 const profileForm = reactive({
   username: '',
   email: '',
@@ -225,6 +263,40 @@ const handleEdit = () => {
   profileForm.phone = userStore.loginUser.phone || '';
   profileForm.gender = userStore.loginUser.gender;
   editModalOpen.value = true;
+};
+
+const handleTopupClick = () => {
+  topupAmount.value = 500;
+  topupModalOpen.value = true;
+};
+
+const handleTopupSubmit = async () => {
+  const amount = Number(topupAmount.value);
+  if (!Number.isFinite(amount) || amount <= 0) {
+    message.warning('请输入正确的充值金额');
+    return;
+  }
+  if (amount > 100000) {
+    message.warning('单次充值金额不能超过 100000 元');
+    return;
+  }
+
+  topupSubmitting.value = true;
+  try {
+    const res = await rechargeMyBalance({ amount });
+    if (res.code === 0 && res.data) {
+      userStore.setLoginUser(res.data);
+      topupModalOpen.value = false;
+      message.success('充值成功');
+      return;
+    }
+    message.error(res.message || '充值失败');
+  } catch (error) {
+    console.error('Recharge balance error:', error);
+    message.error('充值失败');
+  } finally {
+    topupSubmitting.value = false;
+  }
 };
 
 const handleProfileSubmit = async () => {
@@ -384,6 +456,16 @@ const handleProfileSubmit = async () => {
   margin-top: 16px;
 }
 
+.topup-input {
+  width: 100%;
+}
+
+.quick-amounts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
 .profile-footer {
   margin-top: 40px;
   text-align: center;
@@ -397,6 +479,10 @@ const handleProfileSubmit = async () => {
   
   .profile-card {
     padding: 30px 24px;
+  }
+
+  .quick-amounts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 </style>
