@@ -164,7 +164,6 @@
         <div class="panel-header">
           <div>
             <h3>在线 AI 客服</h3>
-            <p>无需登录，输入问题即可直接开始对话。</p>
           </div>
         </div>
 
