@@ -580,6 +580,10 @@ declare namespace API {
     checkPassword?: string;
   };
 
+  type UserRechargeRequest = {
+    amount?: number;
+  };
+
   type UserUpdatePasswordRequest = {
     oldPassword?: string;
     newPassword?: string;

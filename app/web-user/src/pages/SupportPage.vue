@@ -596,6 +596,8 @@ onMounted(() => {
 
 .info-card {
   padding: 22px 20px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .info-card .label {
@@ -611,12 +613,17 @@ onMounted(() => {
   display: block;
   font-size: 1.15rem;
   color: #21170f;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .info-card p {
   margin: 10px 0 0;
   color: #6a5d4d;
   line-height: 1.7;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .hero-panel {

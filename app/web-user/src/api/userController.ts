@@ -163,3 +163,18 @@ export async function updateMyUser(
     ...(options || {}),
   });
 }
+
+/** 当前用户余额充值 POST /user/recharge/my */
+export async function rechargeMyBalance(
+  body: API.UserRechargeRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseLoginUserVO>("/user/recharge/my", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
