@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="logo">
           <router-link to="/">
-            PRECISION PATH | 精准之路
+            手环手表商城
           </router-link>
         </div>
 
@@ -85,7 +85,7 @@
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-brand">
-          <h3>精准轨迹</h3>
+          <h3>手环手表商城</h3>
           <p>为日常收藏者打造兼具设计感与质感的现代腕表。</p>
         </div>
         <div class="footer-links">
@@ -110,7 +110,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 精准轨迹。保留所有权利。</p>
+        <p>&copy; 2026 手环手表商城。保留所有权利。</p>
       </div>
     </footer>
   </div>

@@ -8,9 +8,9 @@
       class="layout-sider"
     >
       <div class="brand-block">
-        <div class="brand-mark">WM</div>
+        <div class="brand-mark">表</div>
         <div v-if="!collapsed" class="brand-copy">
-          <strong>WatchMall</strong>
+          <strong>手环手表商城</strong>
           <span>后台管理</span>
         </div>
       </div>

@@ -5,7 +5,7 @@
       <div class="glass-panel register-card liquid-glass">
         <div class="register-header">
           <h2>加入会员</h2>
-          <p>创建您的 WatchMall 专属账号</p>
+          <p>创建您的手环手表商城专属账号</p>
         </div>
 
         <a-form

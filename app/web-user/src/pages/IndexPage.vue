@@ -129,30 +129,6 @@
         </div>
       </div>
     </section>
-
-    <section class="membership-section">
-      <div class="membership-bg"></div>
-      <div class="container membership-container">
-        <div class="membership-card liquid-glass-dark">
-          <div class="membership-content">
-            <span class="eyebrow text-gradient-gold">尊享俱乐部</span>
-            <h2 class="text-light">开启非凡体验</h2>
-            <p class="text-light-muted">
-              加入我们的独家会员俱乐部，优先获取限量版资讯、参加私人鉴赏会并享受定制礼宾服务。
-            </p>
-            <div class="membership-form">
-              <a-input placeholder="您的电子邮箱地址" size="large" />
-              <a-button type="primary" size="large">申请加入</a-button>
-            </div>
-            <p class="waitlist-count">
-              已有
-              <span class="count text-gradient-gold">2,481</span>
-              位鉴赏家在候补名单中
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 
