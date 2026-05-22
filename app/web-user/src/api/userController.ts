@@ -111,6 +111,21 @@ export async function updateUserPassword(
   });
 }
 
+/** 忘记密码重置 POST /user/password/forgot/reset */
+export async function resetForgotPassword(
+  body: API.UserForgotPasswordRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean>("/user/password/forgot/reset", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 姿态保留：后端未提供注释 POST /user/logout */
 export async function userLogout(options?: { [key: string]: any }) {
   return request<API.BaseResponseBoolean>("/user/logout", {

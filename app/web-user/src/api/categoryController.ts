@@ -55,6 +55,21 @@ export async function listCategory(options?: { [key: string]: any }) {
   });
 }
 
+export async function pageCategory(
+  params: API.pageCategoryParams,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponsePageCategory>("/category/page", {
+    method: "GET",
+    params: {
+      current: "1",
+      pageSize: "10",
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 POST /category/list/page */
 export async function listCategoryByPage(
   body: API.CategoryQueryRequest,

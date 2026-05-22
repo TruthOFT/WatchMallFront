@@ -1,31 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">Order Admin</p>
-        <h2>订单管理</h2>
-        <p class="desc">按订单号、收货人或手机号筛选订单，查看支付状态、超时风险和完整订单支付明细。</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span>订单总数</span>
-          <strong>{{ stats.totalCount ?? 0 }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>待支付</span>
-          <strong>{{ stats.pendingCount ?? 0 }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>已支付</span>
-          <strong>{{ stats.paidCount ?? 0 }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>超时未付</span>
-          <strong>{{ stats.overduePendingCount ?? 0 }}</strong>
-        </div>
-      </div>
-    </section>
-
     <section class="panel">
       <div class="toolbar">
         <div class="toolbar-left">
@@ -393,21 +367,11 @@ onMounted(async () => {
   gap: 18px;
 }
 
-.hero-card,
 .panel {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(186, 201, 218, 0.55);
   box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px;
-  background: linear-gradient(120deg, rgba(40, 53, 131, 0.94) 0%, rgba(21, 101, 192, 0.88) 100%);
-  color: #f5f8ff;
 }
 
 .eyebrow {
@@ -418,11 +382,6 @@ onMounted(async () => {
   color: #c2d9ff;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 560px;
@@ -430,30 +389,9 @@ onMounted(async () => {
   color: #dde8ff;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
-  gap: 12px;
-  min-width: 520px;
-}
 
-.stat-card {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-}
 
-.stat-card span {
-  display: block;
-  font-size: 12px;
-  color: #dce8ff;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
 
 .panel {
   padding: 20px;
@@ -574,16 +512,10 @@ onMounted(async () => {
 }
 
 @media (max-width: 1200px) {
-  .hero-card,
   .toolbar,
   .toolbar-left,
   .toolbar-right {
     flex-direction: column;
-  }
-
-  .hero-stats {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
-    min-width: 0;
   }
 
   .search-input,

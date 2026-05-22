@@ -302,6 +302,16 @@ declare namespace API {
     pageSize?: string;
   };
 
+  type pageCategoryParams = {
+    current?: string;
+    pageSize?: string;
+  };
+
+  type pageProductsParams = {
+    current?: string;
+    pageSize?: string;
+  };
+
   type listRelatedProductsParams = {
     id: string;
     size?: string;
@@ -572,6 +582,13 @@ declare namespace API {
     userAccount?: string;
     userPassword?: string;
     rememberMe?: boolean;
+  };
+
+  type UserForgotPasswordRequest = {
+    userAccount?: string;
+    oldPassword?: string;
+    newPassword?: string;
+    checkPassword?: string;
   };
 
   type UserRegisterRequest = {

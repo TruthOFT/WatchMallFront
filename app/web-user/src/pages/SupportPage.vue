@@ -16,7 +16,7 @@
             </div>
             <div class="info-card liquid-glass">
               <span class="label">客服邮箱</span>
-              <strong>support@watchmall.com</strong>
+              <strong>support@shouhuanshoubiao.com</strong>
               <p>复杂售后问题会在 1 个工作日内回访</p>
             </div>
             <div class="info-card liquid-glass">

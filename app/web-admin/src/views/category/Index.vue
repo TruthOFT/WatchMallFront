@@ -1,23 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">Category Admin</p>
-        <h2>分类管理</h2>
-        <p class="desc">维护商品分类、展示状态和分类图片，支持分页检索与编辑。</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span>分类总数</span>
-          <strong>{{ pagination.total }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>当前展示</span>
-          <strong>{{ visibleCount }}</strong>
-        </div>
-      </div>
-    </section>
-
     <section class="panel">
       <div class="toolbar">
         <div class="toolbar-left">
@@ -400,22 +382,11 @@ onBeforeUnmount(() => {
   gap: 18px;
 }
 
-.hero-card,
 .panel {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(186, 201, 218, 0.55);
   box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px;
-  background:
-    linear-gradient(120deg, rgba(9, 47, 83, 0.95) 0%, rgba(17, 97, 165, 0.9) 100%);
-  color: #f4f8fd;
 }
 
 .eyebrow {
@@ -426,11 +397,6 @@ onBeforeUnmount(() => {
   color: #aacdf0;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 520px;
@@ -438,30 +404,9 @@ onBeforeUnmount(() => {
   color: #d3e4f5;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 12px;
-  min-width: 260px;
-}
 
-.stat-card {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-}
 
-.stat-card span {
-  display: block;
-  font-size: 12px;
-  color: #d2e6f8;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
 
 .panel {
   padding: 20px;
@@ -515,7 +460,6 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 900px) {
-  .hero-card,
   .toolbar,
   .toolbar-left,
   .toolbar-right,

@@ -1,27 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">Product Editor</p>
-        <h2>{{ isEditMode ? "编辑商品" : "新增商品" }}</h2>
-        <p class="desc">维护商品基础信息、图片和纯 SKU 配置，不再使用属性值映射。</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span>已选分类</span>
-          <strong>{{ formState.categoryIds.length }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>图片数量</span>
-          <strong>{{ imageItems.length }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>SKU 数量</span>
-          <strong>{{ skuItems.length }}</strong>
-        </div>
-      </div>
-    </section>
-
     <section class="panel">
       <a-spin :spinning="loading">
         <a-form layout="vertical">
@@ -189,7 +167,7 @@ import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { addProduct, getAdminProductDetail, updateProduct } from "@/api/productController";
-import { listCategory } from "@/api/categoryController";
+import { listCategoryByPage } from "@/api/categoryController";
 import { uploadFile } from "@/api/fileController";
 import { BASE_URL } from "@/request";
 
@@ -306,9 +284,12 @@ const resetForm = () => {
 };
 
 const fetchCategories = async () => {
-  const res = await listCategory();
+  const res = await listCategoryByPage({
+    current: 1,
+    pageSize: 100,
+  });
   if (res.code === 0) {
-    categoryOptions.value = (res.data ?? [])
+    categoryOptions.value = (res.data?.records ?? [])
       .filter((item): item is API.Category & { id: string } => Boolean(item.id))
       .map((item) => ({
         label: item.name || `分类 ${item.id}`,
@@ -598,21 +579,11 @@ onBeforeUnmount(() => {
   gap: 18px;
 }
 
-.hero-card,
 .panel {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(186, 201, 218, 0.55);
   box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px;
-  background: linear-gradient(120deg, rgba(15, 52, 98, 0.95) 0%, rgba(18, 112, 189, 0.9) 100%);
-  color: #f4f9ff;
 }
 
 .eyebrow {
@@ -623,11 +594,6 @@ onBeforeUnmount(() => {
   color: #b4d6f3;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 620px;
@@ -635,30 +601,9 @@ onBeforeUnmount(() => {
   color: #d8e8f7;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(110px, 1fr));
-  gap: 12px;
-  min-width: 360px;
-}
 
-.stat-card {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-}
 
-.stat-card span {
-  display: block;
-  font-size: 12px;
-  color: #d5e9fb;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
 
 .panel {
   padding: 20px;
@@ -747,15 +692,9 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 1080px) {
-  .hero-card,
   .feature-row {
     grid-template-columns: 1fr;
     flex-direction: column;
-  }
-
-  .hero-stats {
-    grid-template-columns: 1fr;
-    min-width: 0;
   }
 
   .form-grid,

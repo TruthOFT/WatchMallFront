@@ -30,6 +30,116 @@
       </a-carousel>
     </section>
 
+    <section class="shop-floor-section">
+      <div class="container">
+        <div class="shop-floor-header">
+          <div>
+            <span class="eyebrow">SHOP BY CATEGORY</span>
+            <h2>浏览分类与全部商品</h2>
+          </div>
+          <p>把分类入口和商品列表放在首页第一屏之后，进入页面就能直接选类、看货、进详情。</p>
+        </div>
+
+        <div v-if="categoriesLoading" class="category-state">
+          <a-spin />
+        </div>
+
+        <a-empty
+          v-else-if="!collections.length"
+          class="category-state"
+          description="暂无分类"
+        />
+
+        <template v-else>
+          <div class="category-rail">
+            <div
+              v-for="col in collections"
+              :key="col.id"
+              class="category-tile"
+              @click="goToCategoryPage(col.id)"
+            >
+              <div
+                class="category-thumb"
+                :style="{ backgroundImage: col.icon ? `url(${col.icon})` : undefined }"
+              >
+                <span v-if="!col.icon">{{ col.name?.slice(0, 1) || '类' }}</span>
+              </div>
+              <strong>{{ col.name }}</strong>
+              <p>{{ col.description || '查看该分类下的商品' }}</p>
+            </div>
+          </div>
+
+          <div v-if="categoryTotal > CATEGORY_PAGE_SIZE" class="pagination-wrap category-pagination">
+            <a-pagination
+              :current="categoryCurrent"
+              :page-size="CATEGORY_PAGE_SIZE"
+              :total="categoryTotal"
+              :show-size-changer="false"
+              @change="handleCategoryPageChange"
+            />
+          </div>
+        </template>
+
+        <div class="product-showcase-heading">
+          <div>
+            <span class="eyebrow">ALL PRODUCTS</span>
+            <h2>全部商品</h2>
+          </div>
+          <span class="product-count">{{ productTotal }} 件商品</span>
+        </div>
+
+        <div v-if="productsLoading" class="product-state">
+          <a-spin size="large" />
+        </div>
+
+        <a-empty
+          v-else-if="!products.length"
+          class="product-state"
+          description="当前暂无商品"
+        />
+
+        <template v-else>
+          <div class="product-grid">
+            <div
+              v-for="product in products"
+              :key="product.id"
+              class="product-card"
+              @click="goToProductDetail(product.id)"
+            >
+              <div
+                class="product-image"
+                :style="{ backgroundImage: product.url ? `url(${product.url})` : undefined }"
+              ></div>
+              <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p v-if="product.title || product.description" class="product-title">
+                  {{ product.title || product.description }}
+                </p>
+                <p class="price">{{ formatPrice(product.price) }}</p>
+                <a-button
+                  type="text"
+                  class="shop-btn"
+                  @click.stop="goToProductDetail(product.id)"
+                >
+                  查看详情
+                </a-button>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="productTotal > PRODUCT_PAGE_SIZE" class="pagination-wrap">
+            <a-pagination
+              :current="productCurrent"
+              :page-size="PRODUCT_PAGE_SIZE"
+              :total="productTotal"
+              :show-size-changer="false"
+              @change="handleProductPageChange"
+            />
+          </div>
+        </template>
+      </div>
+    </section>
+
     <section class="story-section">
       <div class="container">
         <div class="story-grid">
@@ -59,118 +169,44 @@
         </div>
       </div>
     </section>
-
-    <section class="collections-gallery">
-      <div class="container">
-        <div class="section-header">
-          <span class="eyebrow">甄选系列</span>
-          <h2>定义您的风格</h2>
-        </div>
-        <div class="collections-grid">
-          <div
-            v-for="col in collections"
-            :key="col.id"
-            class="collection-card liquid-glass"
-            @click="goToCategoryPage(col.id)"
-          >
-            <div
-              class="col-image"
-              :style="{ backgroundImage: `url(${col.icon})` }"
-            ></div>
-            <div class="col-overlay">
-              <div class="col-text">
-                <h3>{{ col.name }}</h3>
-                <p>{{ col.description }}</p>
-                <a-button
-                  type="link"
-                  class="explore-btn"
-                  @click.stop="goToCategoryPage(col.id)"
-                >
-                  立即探索
-                  <arrow-right-outlined />
-                </a-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="showcase-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>甄选精品</h2>
-          <p>为少数鉴赏家悉心挑选。</p>
-        </div>
-
-        <div class="product-grid">
-          <div
-            v-for="product in products"
-            :key="product.id"
-            class="product-card liquid-glass"
-            @click="goToProductDetail(product.id)"
-          >
-            <div
-              class="product-image"
-              :style="{ backgroundImage: `url(${product.url})` }"
-            ></div>
-            <div class="product-info">
-              <h3>{{ product.name }}</h3>
-              <p class="price">{{ formatPrice(product.price) }}</p>
-              <a-button
-                type="text"
-                class="shop-btn"
-                @click.stop="goToProductDetail(product.id)"
-              >
-                查看详情
-              </a-button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="membership-section">
-      <div class="membership-bg"></div>
-      <div class="container membership-container">
-        <div class="membership-card liquid-glass-dark">
-          <div class="membership-content">
-            <span class="eyebrow text-gradient-gold">尊享俱乐部</span>
-            <h2 class="text-light">开启非凡体验</h2>
-            <p class="text-light-muted">
-              加入我们的独家会员俱乐部，优先获取限量版资讯、参加私人鉴赏会并享受定制礼宾服务。
-            </p>
-            <div class="membership-form">
-              <a-input placeholder="您的电子邮箱地址" size="large" />
-              <a-button type="primary" size="large">申请加入</a-button>
-            </div>
-            <p class="waitlist-count">
-              已有
-              <span class="count text-gradient-gold">2,481</span>
-              位鉴赏家在候补名单中
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { ArrowRightOutlined } from "@ant-design/icons-vue";
-import { home } from "@/api/productController";
+import { home, pageProducts } from "@/api/productController";
+import { pageCategory } from "@/api/categoryController";
 import { resolveAssetUrl } from "@/utils/asset";
 import { normalizeRouteId } from "@/utils/route";
 
 const router = useRouter();
+const CATEGORY_PAGE_SIZE = 10;
+const PRODUCT_PAGE_SIZE = 10;
 
 const heroItems = ref<API.ProductVO[]>([]);
 const featuredProduct = ref<API.ProductVO>();
 const storyImage = ref("");
 const products = ref<API.ProductVO[]>([]);
 const collections = ref<API.CategoryVO[]>([]);
+const productsLoading = ref(true);
+const categoriesLoading = ref(true);
+const categoryCurrent = ref(1);
+const categoryTotal = ref(0);
+const productCurrent = ref(1);
+const productTotal = ref(0);
+
+const normalizeProducts = (items?: API.ProductVO[]) =>
+  (items ?? []).map((item) => ({
+    ...item,
+    url: resolveAssetUrl(item.url),
+  }));
+
+const normalizeCategories = (items?: Array<API.Category | API.CategoryVO>) =>
+  (items ?? []).map((item) => ({
+    ...item,
+    icon: resolveAssetUrl(item.icon),
+  }));
 
 const formatPrice = (price?: number) => {
   if (typeof price !== "number") {
@@ -198,7 +234,67 @@ const goToCategoryPage = (categoryId?: string | number | null) => {
   });
 };
 
+const loadCategoryPage = async (
+  page = categoryCurrent.value,
+  fallbackList: Array<API.Category | API.CategoryVO> = []
+) => {
+  categoriesLoading.value = true;
+  try {
+    const response = await pageCategory({
+      current: String(page),
+      pageSize: String(CATEGORY_PAGE_SIZE),
+    });
+    if (response.code === 0 && response.data) {
+      collections.value = normalizeCategories(response.data.records);
+      categoryCurrent.value = Number(response.data.current ?? page);
+      categoryTotal.value = Number(response.data.total ?? 0);
+      return;
+    }
+    collections.value = normalizeCategories(fallbackList);
+    categoryCurrent.value = 1;
+    categoryTotal.value = fallbackList.length;
+  } catch (error) {
+    console.log(error);
+    collections.value = normalizeCategories(fallbackList);
+    categoryCurrent.value = 1;
+    categoryTotal.value = fallbackList.length;
+  } finally {
+    categoriesLoading.value = false;
+  }
+};
+
+const loadProductPage = async (
+  page = productCurrent.value,
+  fallbackList: API.ProductVO[] = []
+) => {
+  productsLoading.value = true;
+  try {
+    const response = await pageProducts({
+      current: String(page),
+      pageSize: String(PRODUCT_PAGE_SIZE),
+    });
+    if (response.code === 0 && response.data) {
+      products.value = normalizeProducts(response.data.records);
+      productCurrent.value = Number(response.data.current ?? page);
+      productTotal.value = Number(response.data.total ?? 0);
+      return;
+    }
+    products.value = normalizeProducts(fallbackList);
+    productCurrent.value = 1;
+    productTotal.value = fallbackList.length;
+  } catch (error) {
+    console.log(error);
+    products.value = normalizeProducts(fallbackList);
+    productCurrent.value = 1;
+    productTotal.value = fallbackList.length;
+  } finally {
+    productsLoading.value = false;
+  }
+};
+
 const fetchData = async () => {
+  let fallbackCategories: API.CategoryVO[] = [];
+  let fallbackProducts: API.ProductVO[] = [];
   try {
     const res = await home();
     if (res.code !== 0 || !res.data) {
@@ -218,24 +314,28 @@ const fetchData = async () => {
       : undefined;
     storyImage.value = featuredProduct.value?.url ?? "";
 
-    products.value = (res.data.recommendList ?? [])
-      .slice(0, 3)
-      .map((item) => ({
-        ...item,
-        url: resolveAssetUrl(item.url),
-      }));
-
-    collections.value = (res.data.categoryVOList ?? []).map((item) => ({
-      ...item,
-      icon: resolveAssetUrl(item.icon),
-    }));
+    fallbackCategories = res.data.categoryVOList ?? [];
+    fallbackProducts = res.data.recommendList ?? [];
   } catch (error) {
     console.log(error);
+  } finally {
+    await Promise.all([
+      loadCategoryPage(1, fallbackCategories),
+      loadProductPage(1, fallbackProducts),
+    ]);
   }
 };
 
+const handleCategoryPageChange = (page: number) => {
+  void loadCategoryPage(page);
+};
+
+const handleProductPageChange = (page: number) => {
+  void loadProductPage(page);
+};
+
 onMounted(() => {
-  fetchData();
+  void fetchData();
 });
 </script>
 
@@ -360,9 +460,205 @@ onMounted(() => {
   color: var(--color-cta);
 }
 
-.story-section {
-  padding: 120px 0;
+.shop-floor-section {
+  padding: 88px 0 110px;
   background-color: var(--color-bg-main);
+}
+
+.shop-floor-header,
+.product-showcase-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.shop-floor-header h2,
+.product-showcase-heading h2 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.shop-floor-header p {
+  max-width: 440px;
+  color: var(--color-secondary);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.category-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.category-state {
+  min-height: 178px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 72px;
+}
+
+.category-rail + .product-showcase-heading {
+  margin-top: 48px;
+}
+
+.category-tile {
+  min-height: 178px;
+  padding: 18px;
+  border: 1px solid rgba(109, 84, 53, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 16px 36px rgba(50, 38, 21, 0.07);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.category-tile:hover {
+  transform: translateY(-5px);
+  border-color: rgba(161, 110, 47, 0.36);
+  box-shadow: 0 20px 42px rgba(50, 38, 21, 0.12);
+}
+
+.category-thumb {
+  height: 80px;
+  border-radius: 14px;
+  background-color: #e6dccd;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8c5c1f;
+  font-size: 2rem;
+  font-family: var(--font-heading);
+}
+
+.category-tile strong {
+  color: var(--color-primary);
+  font-size: 1.08rem;
+  margin-bottom: 8px;
+}
+
+.category-tile p {
+  color: var(--color-secondary);
+  display: -webkit-box;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-count {
+  color: var(--color-cta);
+  font-family: var(--font-body);
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 26px;
+}
+
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.category-pagination {
+  margin-bottom: 72px;
+}
+
+.product-state {
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-card {
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(109, 84, 53, 0.1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 18px 40px rgba(50, 38, 21, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px rgba(50, 38, 21, 0.14);
+}
+
+.product-image {
+  height: 260px;
+  flex: none;
+  background-color: #e6dccd;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.product-info h3 {
+  color: var(--color-primary);
+  font-size: 1.24rem;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.product-title {
+  color: var(--color-secondary);
+  display: -webkit-box;
+  font-size: 0.94rem;
+  line-height: 1.6;
+  min-height: 48px;
+  margin: 0 0 14px;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.price {
+  color: var(--color-cta);
+  font-family: var(--font-body);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.shop-btn {
+  color: var(--color-secondary);
+  padding: 0;
+}
+
+.story-section {
+  padding: 110px 0;
+  background-color: #fff;
 }
 
 .story-grid {
@@ -403,128 +699,6 @@ onMounted(() => {
 
 .story-visual:hover .story-image {
   transform: scale(1.1);
-}
-
-.collections-gallery {
-  padding: 100px 0;
-  background-color: #fff;
-}
-
-.collections-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
-}
-
-.collection-card {
-  position: relative;
-  height: 450px;
-  overflow: hidden;
-  cursor: pointer;
-  border-radius: 24px;
-}
-
-.col-image {
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.collection-card:hover .col-image {
-  transform: scale(1.1);
-}
-
-.col-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.7) 0%,
-    rgba(0, 0, 0, 0) 50%
-  );
-  display: flex;
-  align-items: flex-end;
-  padding: 48px;
-}
-
-.col-text h3 {
-  color: #fff;
-  font-size: 2.2rem;
-  margin-bottom: 12px;
-}
-
-.col-text p {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.1rem;
-  margin-bottom: 24px;
-  max-width: 300px;
-}
-
-.explore-btn {
-  color: var(--color-cta) !important;
-  padding: 0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.showcase-section {
-  padding: 120px 0;
-  background-color: var(--color-bg-main);
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 40px;
-}
-
-.product-card {
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.product-image {
-  flex: 1;
-  background-size: cover;
-  background-position: center;
-  transition: transform 0.5s ease;
-}
-
-.product-card:hover .product-image {
-  transform: scale(1.05);
-}
-
-.product-info {
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  text-align: center;
-}
-
-.product-info h3 {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-.price {
-  color: var(--color-cta);
-  font-family: var(--font-body);
-  font-weight: 600;
-  margin-bottom: 16px;
-}
-
-.shop-btn {
-  color: var(--color-secondary);
 }
 
 .membership-section {
@@ -587,12 +761,31 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
+  .shop-floor-header,
+  .product-showcase-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .shop-floor-header h2,
+  .product-showcase-heading h2,
+  .story-content h2 {
+    font-size: 2.3rem;
+  }
+
+  .category-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
   .hero-title {
     font-size: 2.5rem;
   }
 
-  .story-grid,
-  .collections-grid {
+  .story-grid {
     grid-template-columns: 1fr;
   }
 

@@ -1,23 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">User Admin</p>
-        <h2>用户管理</h2>
-        <p class="desc">按账号、昵称、邮箱、手机号快速筛选用户，并在详情抽屉中查看基础信息和地址信息。</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span>用户总数</span>
-          <strong>{{ pagination.total }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>当前页</span>
-          <strong>{{ pagination.current }}</strong>
-        </div>
-      </div>
-    </section>
-
     <section class="panel">
       <div class="toolbar">
         <div class="toolbar-left">
@@ -331,21 +313,11 @@ fetchData();
   gap: 18px;
 }
 
-.hero-card,
 .panel {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(186, 201, 218, 0.55);
   box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px;
-  background: linear-gradient(120deg, rgba(114, 28, 121, 0.92) 0%, rgba(38, 84, 124, 0.92) 100%);
-  color: #fdf7ff;
 }
 
 .eyebrow {
@@ -356,11 +328,6 @@ fetchData();
   color: #f3d5ff;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 560px;
@@ -368,30 +335,9 @@ fetchData();
   color: #f7e7ff;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 12px;
-  min-width: 260px;
-}
 
-.stat-card {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-}
 
-.stat-card span {
-  display: block;
-  font-size: 12px;
-  color: #f8dfff;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
 
 .panel {
   padding: 20px;
@@ -498,7 +444,6 @@ fetchData();
 }
 
 @media (max-width: 980px) {
-  .hero-card,
   .toolbar,
   .toolbar-left,
   .toolbar-right {

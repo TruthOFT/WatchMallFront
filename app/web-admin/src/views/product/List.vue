@@ -1,23 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">Product Admin</p>
-        <h2>商品列表</h2>
-        <p class="desc">按关键字、分类和状态快速筛选商品，支持删除和跳转编辑。</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span>商品总数</span>
-          <strong>{{ pagination.total }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>当前页</span>
-          <strong>{{ pagination.current }}</strong>
-        </div>
-      </div>
-    </section>
-
     <section class="panel">
       <div class="toolbar">
         <div class="toolbar-left">
@@ -126,7 +108,7 @@ import dayjs from "dayjs";
 import { message } from "ant-design-vue";
 import type { TableColumnsType } from "ant-design-vue";
 import { useRouter } from "vue-router";
-import { listCategory } from "@/api/categoryController";
+import { listCategoryByPage } from "@/api/categoryController";
 import { deleteProduct, pageAdminProducts } from "@/api/productController";
 import { BASE_URL } from "@/request";
 
@@ -188,9 +170,12 @@ const splitTags = (value?: string) =>
     .filter(Boolean);
 
 const fetchCategories = async () => {
-  const res = await listCategory();
+  const res = await listCategoryByPage({
+    current: 1,
+    pageSize: 100,
+  });
   if (res.code === 0) {
-    categoryOptions.value = (res.data ?? [])
+    categoryOptions.value = (res.data?.records ?? [])
       .filter((item): item is API.Category & { id: string } => Boolean(item.id))
       .map((item) => ({
         label: item.name || `分类 ${item.id}`,
@@ -268,22 +253,11 @@ onMounted(async () => {
   gap: 18px;
 }
 
-.hero-card,
 .panel {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(186, 201, 218, 0.55);
   box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px;
-  background:
-    linear-gradient(120deg, rgba(7, 72, 54, 0.94) 0%, rgba(11, 145, 110, 0.88) 100%);
-  color: #f4fffb;
 }
 
 .eyebrow {
@@ -294,11 +268,6 @@ onMounted(async () => {
   color: #b7f3dd;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 520px;
@@ -306,30 +275,9 @@ onMounted(async () => {
   color: #d9f8eb;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 12px;
-  min-width: 260px;
-}
 
-.stat-card {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-}
 
-.stat-card span {
-  display: block;
-  font-size: 12px;
-  color: #d2f9ea;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
 
 .panel {
   padding: 20px;
@@ -400,7 +348,6 @@ onMounted(async () => {
 }
 
 @media (max-width: 980px) {
-  .hero-card,
   .toolbar,
   .toolbar-left,
   .toolbar-right {
