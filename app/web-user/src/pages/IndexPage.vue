@@ -152,7 +152,7 @@
             </p>
             <a
               class="text-link clickable-link"
-              @click.prevent="goToProductDetail(featuredProduct?.id)"
+              @click.prevent="goToBrandStory"
             >
               阅读我们的故事
             </a>
@@ -232,6 +232,10 @@ const goToCategoryPage = (categoryId?: string | number | null) => {
     path: `/category/${nextId}`,
     query: { page: "1" },
   });
+};
+
+const goToBrandStory = () => {
+  void router.push("/about");
 };
 
 const loadCategoryPage = async (
