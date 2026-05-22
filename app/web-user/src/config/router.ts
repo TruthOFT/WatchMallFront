@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import BasicLayout from "@/layouts/BasicLayout.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage.vue";
 import SupportPage from "@/pages/SupportPage.vue";
 import AboutPage from "@/pages/AboutPage.vue";
 import CartPage from "@/pages/CartPage.vue";
@@ -72,6 +73,11 @@ const routes = [
             {
                 path: "register",
                 component: RegisterPage,
+                meta: { public: true },
+            },
+            {
+                path: "forgot-password",
+                component: ForgotPasswordPage,
                 meta: { public: true },
             },
             {

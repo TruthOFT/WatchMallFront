@@ -584,6 +584,13 @@ declare namespace API {
     rememberMe?: boolean;
   };
 
+  type UserForgotPasswordRequest = {
+    userAccount?: string;
+    oldPassword?: string;
+    newPassword?: string;
+    checkPassword?: string;
+  };
+
   type UserRegisterRequest = {
     userAccount?: string;
     userPassword?: string;

@@ -43,7 +43,7 @@
 
           <div class="form-actions">
             <a-checkbox v-model:checked="formState.rememberMe">记住我</a-checkbox>
-            <a href="#" class="forgot-link">忘记密码？</a>
+            <router-link to="/user/forgot-password" class="forgot-link">忘记密码？</router-link>
           </div>
 
           <a-form-item>
