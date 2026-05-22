@@ -1,23 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">Support Center</p>
-        <h2>客户支持管理</h2>
-        <p class="desc">集中处理用户反馈、人工客服回复和 AI 客服会话，按状态追踪当前支持工单。</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span>工单总数</span>
-          <strong>{{ pagination.total }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>当前页</span>
-          <strong>{{ pagination.current }}</strong>
-        </div>
-      </div>
-    </section>
-
     <section class="panel">
       <div class="toolbar">
         <div class="toolbar-left">
@@ -394,21 +376,11 @@ void fetchData();
   gap: 18px;
 }
 
-.hero-card,
 .panel {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(186, 201, 218, 0.55);
   box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px;
-  background: linear-gradient(120deg, rgba(28, 71, 121, 0.96) 0%, rgba(185, 143, 92, 0.92) 100%);
-  color: #fdfcf8;
 }
 
 .eyebrow {
@@ -419,11 +391,6 @@ void fetchData();
   color: #f5e5c8;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 560px;
@@ -431,30 +398,9 @@ void fetchData();
   color: #f7efe1;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 12px;
-  min-width: 260px;
-}
 
-.stat-card {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-}
 
-.stat-card span {
-  display: block;
-  font-size: 12px;
-  color: #f8e9d0;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
 
 .panel {
   padding: 20px;
@@ -549,7 +495,6 @@ void fetchData();
 }
 
 @media (max-width: 980px) {
-  .hero-card,
   .toolbar,
   .toolbar-left,
   .toolbar-right,

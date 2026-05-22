@@ -1,23 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">Pay Admin</p>
-        <h2>支付记录</h2>
-        <p class="desc">按订单号、支付单号、用户 ID 和支付时间筛选支付记录，支持详情查看与订单联动。</p>
-      </div>
-      <div class="hero-stats">
-        <div class="stat-card">
-          <span>记录总数</span>
-          <strong>{{ pagination.total }}</strong>
-        </div>
-        <div class="stat-card">
-          <span>当前页</span>
-          <strong>{{ pagination.current }}</strong>
-        </div>
-      </div>
-    </section>
-
     <section class="panel">
       <div class="toolbar">
         <div class="toolbar-left">
@@ -261,21 +243,11 @@ fetchData();
   gap: 18px;
 }
 
-.hero-card,
 .panel {
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(186, 201, 218, 0.55);
   box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 24px;
-  background: linear-gradient(120deg, rgba(97, 56, 22, 0.94) 0%, rgba(198, 117, 39, 0.9) 100%);
-  color: #fff8f1;
 }
 
 .eyebrow {
@@ -286,11 +258,6 @@ fetchData();
   color: #ffe0bd;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 560px;
@@ -298,30 +265,9 @@ fetchData();
   color: #fff1e2;
 }
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 12px;
-  min-width: 260px;
-}
 
-.stat-card {
-  padding: 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.12);
-}
 
-.stat-card span {
-  display: block;
-  font-size: 12px;
-  color: #ffe7cf;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 8px;
-  font-size: 28px;
-}
 
 .panel {
   padding: 20px;
@@ -361,7 +307,6 @@ fetchData();
 }
 
 @media (max-width: 980px) {
-  .hero-card,
   .toolbar,
   .toolbar-left,
   .toolbar-right {

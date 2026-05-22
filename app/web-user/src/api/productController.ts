@@ -77,6 +77,21 @@ export async function listProduct(options?: { [key: string]: any }) {
   });
 }
 
+export async function pageProducts(
+  params: API.pageProductsParams,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponsePageProductVO>("/product/page", {
+    method: "GET",
+    params: {
+      current: "1",
+      pageSize: "10",
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 export async function listRelatedProducts(
   params: API.listRelatedProductsParams,
   options?: { [key: string]: any }

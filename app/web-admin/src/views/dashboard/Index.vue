@@ -1,36 +1,5 @@
 <template>
   <div class="page-shell">
-    <section class="hero-card">
-      <div>
-        <p class="eyebrow">Admin Dashboard</p>
-        <h2>后台首页</h2>
-        <p class="desc">聚合核心订单、用户和商品指标，方便快速判断业务状态与近期订单波动。</p>
-      </div>
-    </section>
-
-    <section class="stats-grid">
-      <div class="stat-card">
-        <span>今日订单</span>
-        <strong>{{ summary.todayOrderCount ?? 0 }}</strong>
-      </div>
-      <div class="stat-card">
-        <span>已支付订单</span>
-        <strong>{{ summary.paidOrderCount ?? 0 }}</strong>
-      </div>
-      <div class="stat-card">
-        <span>待支付订单</span>
-        <strong>{{ summary.pendingOrderCount ?? 0 }}</strong>
-      </div>
-      <div class="stat-card">
-        <span>用户总数</span>
-        <strong>{{ summary.totalUserCount ?? 0 }}</strong>
-      </div>
-      <div class="stat-card">
-        <span>商品总数</span>
-        <strong>{{ summary.totalProductCount ?? 0 }}</strong>
-      </div>
-    </section>
-
     <section class="panel">
       <div class="panel-header">
         <div>
@@ -165,21 +134,7 @@ onMounted(() => {
   flex-direction: column;
   gap: 18px;
 }
-
-.hero-card,
 .panel,
-.stat-card {
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(186, 201, 218, 0.55);
-  box-shadow: 0 18px 40px rgba(19, 42, 68, 0.08);
-}
-
-.hero-card {
-  padding: 24px;
-  background: linear-gradient(135deg, rgba(11, 74, 135, 0.95) 0%, rgba(12, 121, 182, 0.88) 100%);
-  color: #f3fbff;
-}
 
 .eyebrow {
   margin: 0 0 10px;
@@ -189,11 +144,6 @@ onMounted(() => {
   color: #bee8ff;
 }
 
-.hero-card h2 {
-  margin: 0;
-  font-size: 30px;
-}
-
 .desc {
   margin: 12px 0 0;
   max-width: 560px;
@@ -201,28 +151,9 @@ onMounted(() => {
   color: #dbf5ff;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-}
 
-.stat-card {
-  padding: 18px;
-}
 
-.stat-card span {
-  display: block;
-  color: #67809b;
-  font-size: 13px;
-}
 
-.stat-card strong {
-  display: block;
-  margin-top: 10px;
-  font-size: 30px;
-  color: #17304c;
-}
 
 .panel {
   padding: 20px;

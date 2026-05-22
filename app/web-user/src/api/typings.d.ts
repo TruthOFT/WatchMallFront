@@ -302,6 +302,16 @@ declare namespace API {
     pageSize?: string;
   };
 
+  type pageCategoryParams = {
+    current?: string;
+    pageSize?: string;
+  };
+
+  type pageProductsParams = {
+    current?: string;
+    pageSize?: string;
+  };
+
   type listRelatedProductsParams = {
     id: string;
     size?: string;
