@@ -34,10 +34,8 @@
       <div class="container">
         <div class="shop-floor-header">
           <div>
-            <span class="eyebrow">SHOP BY CATEGORY</span>
-            <h2>浏览分类与全部商品</h2>
+            <h2>精选商品</h2>
           </div>
-          <p>把分类入口和商品列表放在首页第一屏之后，进入页面就能直接选类、看货、进详情。</p>
         </div>
 
         <div v-if="categoriesLoading" class="category-state">
@@ -82,7 +80,6 @@
 
         <div class="product-showcase-heading">
           <div>
-            <span class="eyebrow">ALL PRODUCTS</span>
             <h2>全部商品</h2>
           </div>
           <span class="product-count">{{ productTotal }} 件商品</span>
@@ -152,7 +149,7 @@
             </p>
             <a
               class="text-link clickable-link"
-              @click.prevent="goToProductDetail(featuredProduct?.id)"
+              @click.prevent="goToBrandStory"
             >
               阅读我们的故事
             </a>
@@ -232,6 +229,10 @@ const goToCategoryPage = (categoryId?: string | number | null) => {
     path: `/category/${nextId}`,
     query: { page: "1" },
   });
+};
+
+const goToBrandStory = () => {
+  void router.push("/about");
 };
 
 const loadCategoryPage = async (
