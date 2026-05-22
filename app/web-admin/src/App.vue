@@ -1,15 +1,27 @@
 <template>
-  <a-config-provider :locale="zhCN">
+  <a-config-provider :locale="appLocale" :render-empty="renderEmpty">
     <router-view />
   </a-config-provider>
 </template>
 
 <script setup lang="ts">
+import { h } from 'vue'
+import { Empty } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 
 dayjs.locale('zh-cn')
+
+const appLocale = {
+  ...zhCN,
+  Empty: {
+    ...zhCN.Empty,
+    description: '暂无数据',
+  },
+}
+
+const renderEmpty = () => h(Empty, { description: '暂无数据' })
 </script>
 
 <style>
