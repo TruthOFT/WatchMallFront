@@ -149,7 +149,7 @@ const onFinish = async () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://images.unsplash.com/photo-1559563458-527698bf5295?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+  background: url("@/assets/register_bg.jpg") center/cover;
   z-index: -1;
 }
 
