@@ -332,11 +332,6 @@ declare namespace API {
   };
 
   type DashboardSummaryVO = {
-    todayOrderCount?: number;
-    paidOrderCount?: number;
-    pendingOrderCount?: number;
-    totalUserCount?: number;
-    totalProductCount?: number;
     recentOrderList?: OrderAdminPageVO[];
   };
 }

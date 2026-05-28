@@ -13,15 +13,17 @@ import 'dayjs/locale/zh-cn'
 
 dayjs.locale('zh-cn')
 
+const emptyDescription = '暂无数据'
+
 const appLocale = {
   ...zhCN,
   Empty: {
     ...zhCN.Empty,
-    description: '暂无数据',
+    description: emptyDescription,
   },
 }
 
-const renderEmpty = () => h(Empty, { description: '暂无数据' })
+const renderEmpty = () => h(Empty, { description: emptyDescription })
 </script>
 
 <style>
